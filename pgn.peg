@@ -1,0 +1,7 @@
+grammar PGN    
+
+tag_pair_section <- tag_pair+
+tag_pair <- "[" key " \"" value "\"]" newline?
+newline <- [\n]?
+key <- [A-Za-z]+
+value <- [^\"]*
