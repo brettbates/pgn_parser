@@ -1,0 +1,50 @@
+[Event "Let's Play!"]
+[Site "Chess.com"]
+[Date "2018.12.04"]
+[Round "?"]
+[White "guilherme_1910"]
+[Black "bmbio"]
+[Result "0-1"]
+[ECO "B40"]
+[WhiteElo "1298"]
+[BlackElo "1388"]
+[Annotator "brett"]
+[PlyCount "30"]
+[EventDate "2018.??.??"]
+[TimeControl "1/259200:0"]
+
+1. e4 e6 {Just wanted to try out the french. Briefly looking though it , it
+has the feel of a strange Queens Gambit, though a tempo down and under attack.}
+2. d4 d5 3. Nc3 Nf6 4. e5 Nfd7 5. Bd3 c5 6. Nf3 cxd4 7. Nxd4 {This has all
+been standard, classical french. I went this way as i felt this was a workable
+pawn structure, even if the Bc8 is a little stuck.  On the downside, i felt
+like white's having 3 developped pieces and the very advanced pawn was
+uncomfortable.} Bb4 $6 {In retrospect i don't like this move. It felt like
+pinning the Nc3 was a good plan, but it seems to have just helped massage his
+position to his liking and left me with e5 pushing into me.} (7... Nxe5 {
+In the game, i felt this was good in terms of material and not having to deal
+witht that thorn in my side, but his 3 vs my 1 developed piece was worrying me,
+this was a better move though, then just make sure i am developing whilst he
+attacks.} 8. Bb5+ Bd7) 8. Bd2 Nxe5 {Should have done it a turn earlier and
+then moved my Bb4 to a more useful sq} 9. a3 Bc5 10. Nf3 {I keep missing the
+setup of this vicious triangle. It is a very telltale setup of the classic
+bishop sac/ greek gift sac. When black castles, Bxh7+ is coming, then Ng5+ and
+a very scary possibility of getting mated on h7 or having the king walk all
+over the place.  To defend against it, Nxf3 or Nxd3 (the better of the two)
+stops any Bishop sac and mating attack. In general having h6 played would also
+stop the sac and make Ng5 impossible.} Nbc6 {Nxd3+ preferable, though this isn;
+t a disaster.} (10... Nxd3+ 11. cxd3) 11. O-O O-O $4 {Just a bad move. I saw
+him do it and presumed myself safe, still ignoring the obvious Nxd3. I am now
+clearly going to get sac'd into.} 12. Bxh7+ Kxh7 13. Ng5+ Kg6 {The correct
+response, but still a bad situation. Generally in this situation, look at Kg8
+if you can control h7, Kh6 and Kg6 if you can't, so that Qg5 doesn't happen.}
+14. h4 f6 {I felt this was a good way to free up some space, but only by
+chance did it work out for me.} (14... Rh8 {The correct response, as
+demonstrated by 15.h5+}) 15. Nxe6 $2 {One turn too early for white, missing
+Bxe6, though i missed this in my calculations for a while too. Good reason to
+create stepping stone diagrams of all pieces more often!} (15. h5+ $3 {The far
+better h5+ trading a N for a Q and still having a vicious attack. I didn't
+even consider it, but demonstrates why 14...Rh8 was necessary.} Kh6 16. Nxe6+
+Kh7 17. Nxd8) 15... Bxe6 {bmbio won by resignation} 0-1
+
+
