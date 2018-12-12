@@ -2,10 +2,11 @@ grammar PGN
 
 root <- tag_pairs:tag_pair* newline? movetext:move_text*
 tag_pair <- "[" key " \"" value "\"]" newline?
-newline <- [\n]?
 key <- [A-Za-z]+
 value <- [^\"]*
 
-move_text <- turn:turn " " white:move " " black:move
+move_text <- turn:turn " " white:move " " black:move newline? " "?
 turn <- [0-9]+ "."
 move <- [KQRNBP]? [a-h] [1-8]  
+
+newline <- [\n]?

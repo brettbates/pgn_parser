@@ -5,7 +5,7 @@ import subprocess
 
 @pytest.fixture
 def compile_peg():
-    print(subprocess.check_output(["canopy", "pgn.peg", "--lang", "python"]))
+    print(subprocess.call(["canopy", "pgn.peg", "--lang", "python"]))
 
 @pytest.mark.usefixtures("compile_peg")
 class TestParseTagPairs(object):
@@ -38,9 +38,33 @@ class TestParseTagPairs(object):
 @pytest.mark.usefixtures("compile_peg")
 class TestParseMovetext(object):
     def test_parse_movetext_simple(self):
-        move1 = '1. e4 e5'
-        parsed = pgn.parse(move1).movetext.elements[0]
-        assert parsed.text == move1
+        moves = '1. e4 e5'
+        parsed = pgn.parse(moves).movetext.elements[0]
+        assert parsed.text == moves
         assert parsed.turn.text == "1."
         assert parsed.white.text == "e4"
         assert parsed.black.text == "e5"
+
+    def test_parse_movetexts_simple_space(self):
+        moves = '1. e4 e5 2. d4 d5'
+        parsed = pgn.parse(moves).movetext
+        first = parsed.elements[0]
+        second = parsed.elements[1]
+        assert first.turn.text == "1."
+        assert first.white.text == "e4"
+        assert first.black.text == "e5"
+        assert second.turn.text == "2."
+        assert second.white.text == "d4"
+        assert second.black.text == "d5"
+
+    def test_parse_movetexts_simple_newline(self):
+        moves = '1. e4 e5\n2. d4 d5'
+        parsed = pgn.parse(moves).movetext
+        first = parsed.elements[0]
+        second = parsed.elements[1]
+        assert first.turn.text == "1."
+        assert first.white.text == "e4"
+        assert first.black.text == "e5"
+        assert second.turn.text == "2."
+        assert second.white.text == "d4"
+        assert second.black.text == "d5"
