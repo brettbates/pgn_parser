@@ -41,19 +41,27 @@ class TestParseMovetext(object):
         moves = '1. e4 e5'
         parsed = pgn.parse(moves).movetext.elements[0]
         assert parsed.text == moves
-        assert parsed.turn.text == "1."
+        assert parsed.turn_no.text == "1."
         assert parsed.white.text == "e4"
         assert parsed.black.text == "e5"
+
+    def test_parse_movetext_simple_BN(self):
+        moves = '2. Bb5 Nc6'
+        parsed = pgn.parse(moves).movetext.elements[0]
+        assert parsed.text == moves
+        assert parsed.turn_no.text == "2."
+        assert parsed.white.text == "Bb5"
+        assert parsed.black.text == "Nc6"
 
     def test_parse_movetexts_simple_space(self):
         moves = '1. e4 e5 2. d4 d5'
         parsed = pgn.parse(moves).movetext
         first = parsed.elements[0]
         second = parsed.elements[1]
-        assert first.turn.text == "1."
+        assert first.turn_no.text == "1."
         assert first.white.text == "e4"
         assert first.black.text == "e5"
-        assert second.turn.text == "2."
+        assert second.turn_no.text == "2."
         assert second.white.text == "d4"
         assert second.black.text == "d5"
 
@@ -62,9 +70,37 @@ class TestParseMovetext(object):
         parsed = pgn.parse(moves).movetext
         first = parsed.elements[0]
         second = parsed.elements[1]
-        assert first.turn.text == "1."
+        assert first.turn_no.text == "1."
         assert first.white.text == "e4"
         assert first.black.text == "e5"
-        assert second.turn.text == "2."
+        assert second.turn_no.text == "2."
         assert second.white.text == "d4"
         assert second.black.text == "d5"
+
+    def test_parse_movetexts_simple_newline_mid(self):
+        moves = '1. e4 e5 2. d4\nd5'
+        parsed = pgn.parse(moves).movetext
+        first = parsed.elements[0]
+        second = parsed.elements[1]
+        assert first.turn_no.text == "1."
+        assert first.white.text == "e4"
+        assert first.black.text == "e5"
+        assert second.turn_no.text == "2."
+        assert second.white.text == "d4"
+        assert second.black.text == "d5"
+
+    def test_parse_movetexts_comment(self):
+        moves = '1. e4 e5 {comment 1...} 2. d4 {comment 2.} d5'
+        parsed = pgn.parse(moves).movetext
+        first = parsed.elements[0]
+        second = parsed.elements[1]
+        print(dir(first.black))
+        print(dir(first.white))
+        assert first.turn_no.text == "1."
+        assert first.white.move.text == "e4"
+        assert first.black.move.text == "e5"
+        assert first.black.annotation.text == "comment 1..."
+        assert second.turn_no.text == "2."
+        assert second.white.move.text == "d4"
+        assert second.white.annotation.text == "comment 2."
+        assert second.black.move.text == "d5"
