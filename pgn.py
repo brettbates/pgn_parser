@@ -30,24 +30,13 @@ class TreeNode2(TreeNode):
 class TreeNode3(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode3, self).__init__(text, offset, elements)
-        self.turn_no = elements[0]
-        self.turn_number = elements[0]
-        self.delim = elements[3]
+        self.move_number = elements[0]
+        self.delim = elements[5]
         self.white = elements[2]
-        self.turn = elements[4]
-        self.black = elements[4]
-
-
-class TreeNode4(TreeNode):
-    def __init__(self, text, offset, elements):
-        super(TreeNode4, self).__init__(text, offset, elements)
-        self.move = elements[0]
-
-
-class TreeNode5(TreeNode):
-    def __init__(self, text, offset, elements):
-        super(TreeNode5, self).__init__(text, offset, elements)
-        self.annotation = elements[2]
+        self.move = elements[6]
+        self.wcomment = elements[4]
+        self.black = elements[6]
+        self.bcomment = elements[8]
 
 
 class ParseError(SyntaxError):
@@ -65,7 +54,7 @@ class Grammar(object):
     REGEX_5 = re.compile('^[KQRNBP]')
     REGEX_6 = re.compile('^[a-h]')
     REGEX_7 = re.compile('^[1-8]')
-    REGEX_8 = re.compile('^[^}]')
+    REGEX_8 = re.compile('^[^\\}]')
     REGEX_9 = re.compile('^[\\s]')
 
     def _read_root(self):
@@ -323,7 +312,7 @@ class Grammar(object):
             return cached[0]
         index1, elements0 = self._offset, []
         address1 = FAILURE
-        address1 = self._read_turn_number()
+        address1 = self._read_move_number()
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
@@ -331,25 +320,69 @@ class Grammar(object):
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
-                address3 = self._read_turn()
+                address3 = self._read_move()
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
+                    index2 = self._offset
                     address4 = self._read_delim()
+                    if address4 is FAILURE:
+                        address4 = TreeNode(self._input[index2:index2], index2)
+                        self._offset = index2
                     if address4 is not FAILURE:
                         elements0.append(address4)
                         address5 = FAILURE
-                        address5 = self._read_turn()
+                        index3 = self._offset
+                        address5 = self._read_comment()
+                        if address5 is FAILURE:
+                            address5 = TreeNode(self._input[index3:index3], index3)
+                            self._offset = index3
                         if address5 is not FAILURE:
                             elements0.append(address5)
                             address6 = FAILURE
-                            index2 = self._offset
                             address6 = self._read_delim()
-                            if address6 is FAILURE:
-                                address6 = TreeNode(self._input[index2:index2], index2)
-                                self._offset = index2
                             if address6 is not FAILURE:
                                 elements0.append(address6)
+                                address7 = FAILURE
+                                address7 = self._read_move()
+                                if address7 is not FAILURE:
+                                    elements0.append(address7)
+                                    address8 = FAILURE
+                                    index4 = self._offset
+                                    address8 = self._read_delim()
+                                    if address8 is FAILURE:
+                                        address8 = TreeNode(self._input[index4:index4], index4)
+                                        self._offset = index4
+                                    if address8 is not FAILURE:
+                                        elements0.append(address8)
+                                        address9 = FAILURE
+                                        index5 = self._offset
+                                        address9 = self._read_comment()
+                                        if address9 is FAILURE:
+                                            address9 = TreeNode(self._input[index5:index5], index5)
+                                            self._offset = index5
+                                        if address9 is not FAILURE:
+                                            elements0.append(address9)
+                                            address10 = FAILURE
+                                            index6 = self._offset
+                                            address10 = self._read_delim()
+                                            if address10 is FAILURE:
+                                                address10 = TreeNode(self._input[index6:index6], index6)
+                                                self._offset = index6
+                                            if address10 is not FAILURE:
+                                                elements0.append(address10)
+                                            else:
+                                                elements0 = None
+                                                self._offset = index1
+                                        else:
+                                            elements0 = None
+                                            self._offset = index1
+                                    else:
+                                        elements0 = None
+                                        self._offset = index1
+                                else:
+                                    elements0 = None
+                                    self._offset = index1
                             else:
                                 elements0 = None
                                 self._offset = index1
@@ -376,9 +409,9 @@ class Grammar(object):
         self._cache['move_text'][index0] = (address0, self._offset)
         return address0
 
-    def _read_turn_number(self):
+    def _read_move_number(self):
         address0, index0 = FAILURE, self._offset
-        cached = self._cache['turn_number'].get(index0)
+        cached = self._cache['move_number'].get(index0)
         if cached:
             self._offset = cached[1]
             return cached[0]
@@ -436,40 +469,7 @@ class Grammar(object):
         else:
             address0 = TreeNode(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
-        self._cache['turn_number'][index0] = (address0, self._offset)
-        return address0
-
-    def _read_turn(self):
-        address0, index0 = FAILURE, self._offset
-        cached = self._cache['turn'].get(index0)
-        if cached:
-            self._offset = cached[1]
-            return cached[0]
-        index1, elements0 = self._offset, []
-        address1 = FAILURE
-        address1 = self._read_move()
-        if address1 is not FAILURE:
-            elements0.append(address1)
-            address2 = FAILURE
-            index2 = self._offset
-            address2 = self._read_tags()
-            if address2 is FAILURE:
-                address2 = TreeNode(self._input[index2:index2], index2)
-                self._offset = index2
-            if address2 is not FAILURE:
-                elements0.append(address2)
-            else:
-                elements0 = None
-                self._offset = index1
-        else:
-            elements0 = None
-            self._offset = index1
-        if elements0 is None:
-            address0 = FAILURE
-        else:
-            address0 = TreeNode4(self._input[index1:self._offset], index1, elements0)
-            self._offset = self._offset
-        self._cache['turn'][index0] = (address0, self._offset)
+        self._cache['move_number'][index0] = (address0, self._offset)
         return address0
 
     def _read_move(self):
@@ -548,74 +548,71 @@ class Grammar(object):
         self._cache['move'][index0] = (address0, self._offset)
         return address0
 
-    def _read_tags(self):
+    def _read_comment(self):
         address0, index0 = FAILURE, self._offset
-        cached = self._cache['tags'].get(index0)
-        if cached:
-            self._offset = cached[1]
-            return cached[0]
-        index1 = self._offset
-        address0 = self._read_anno_tag()
-        if address0 is FAILURE:
-            address0 = TreeNode(self._input[index1:index1], index1)
-            self._offset = index1
-        self._cache['tags'][index0] = (address0, self._offset)
-        return address0
-
-    def _read_anno_tag(self):
-        address0, index0 = FAILURE, self._offset
-        cached = self._cache['anno_tag'].get(index0)
+        cached = self._cache['comment'].get(index0)
         if cached:
             self._offset = cached[1]
             return cached[0]
         index1, elements0 = self._offset, []
         address1 = FAILURE
-        index2 = self._offset
-        address1 = self._read_delim()
-        if address1 is FAILURE:
-            address1 = TreeNode(self._input[index2:index2], index2)
-            self._offset = index2
+        chunk0 = None
+        if self._offset < self._input_size:
+            chunk0 = self._input[self._offset:self._offset + 1]
+        if chunk0 == '{':
+            address1 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+            self._offset = self._offset + 1
+        else:
+            address1 = FAILURE
+            if self._offset > self._failure:
+                self._failure = self._offset
+                self._expected = []
+            if self._offset == self._failure:
+                self._expected.append('"{"')
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
-            chunk0 = None
-            if self._offset < self._input_size:
-                chunk0 = self._input[self._offset:self._offset + 1]
-            if chunk0 == '{':
-                address2 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
-                self._offset = self._offset + 1
+            remaining0, index2, elements1, address3 = 0, self._offset, [], True
+            while address3 is not FAILURE:
+                chunk1 = None
+                if self._offset < self._input_size:
+                    chunk1 = self._input[self._offset:self._offset + 1]
+                if chunk1 is not None and Grammar.REGEX_8.search(chunk1):
+                    address3 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+                    self._offset = self._offset + 1
+                else:
+                    address3 = FAILURE
+                    if self._offset > self._failure:
+                        self._failure = self._offset
+                        self._expected = []
+                    if self._offset == self._failure:
+                        self._expected.append('[^\\}]')
+                if address3 is not FAILURE:
+                    elements1.append(address3)
+                    remaining0 -= 1
+            if remaining0 <= 0:
+                address2 = TreeNode(self._input[index2:self._offset], index2, elements1)
+                self._offset = self._offset
             else:
                 address2 = FAILURE
-                if self._offset > self._failure:
-                    self._failure = self._offset
-                    self._expected = []
-                if self._offset == self._failure:
-                    self._expected.append('"{"')
             if address2 is not FAILURE:
                 elements0.append(address2)
-                address3 = FAILURE
-                address3 = self._read_annotation()
-                if address3 is not FAILURE:
-                    elements0.append(address3)
+                address4 = FAILURE
+                chunk2 = None
+                if self._offset < self._input_size:
+                    chunk2 = self._input[self._offset:self._offset + 1]
+                if chunk2 == '}':
+                    address4 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+                    self._offset = self._offset + 1
+                else:
                     address4 = FAILURE
-                    chunk1 = None
-                    if self._offset < self._input_size:
-                        chunk1 = self._input[self._offset:self._offset + 1]
-                    if chunk1 == '}':
-                        address4 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
-                        self._offset = self._offset + 1
-                    else:
-                        address4 = FAILURE
-                        if self._offset > self._failure:
-                            self._failure = self._offset
-                            self._expected = []
-                        if self._offset == self._failure:
-                            self._expected.append('"}"')
-                    if address4 is not FAILURE:
-                        elements0.append(address4)
-                    else:
-                        elements0 = None
-                        self._offset = index1
+                    if self._offset > self._failure:
+                        self._failure = self._offset
+                        self._expected = []
+                    if self._offset == self._failure:
+                        self._expected.append('"}"')
+                if address4 is not FAILURE:
+                    elements0.append(address4)
                 else:
                     elements0 = None
                     self._offset = index1
@@ -628,41 +625,9 @@ class Grammar(object):
         if elements0 is None:
             address0 = FAILURE
         else:
-            address0 = TreeNode5(self._input[index1:self._offset], index1, elements0)
+            address0 = self._actions.make_comment(self._input, index1, self._offset, elements0)
             self._offset = self._offset
-        self._cache['anno_tag'][index0] = (address0, self._offset)
-        return address0
-
-    def _read_annotation(self):
-        address0, index0 = FAILURE, self._offset
-        cached = self._cache['annotation'].get(index0)
-        if cached:
-            self._offset = cached[1]
-            return cached[0]
-        remaining0, index1, elements0, address1 = 0, self._offset, [], True
-        while address1 is not FAILURE:
-            chunk0 = None
-            if self._offset < self._input_size:
-                chunk0 = self._input[self._offset:self._offset + 1]
-            if chunk0 is not None and Grammar.REGEX_8.search(chunk0):
-                address1 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
-                self._offset = self._offset + 1
-            else:
-                address1 = FAILURE
-                if self._offset > self._failure:
-                    self._failure = self._offset
-                    self._expected = []
-                if self._offset == self._failure:
-                    self._expected.append('[^}]')
-            if address1 is not FAILURE:
-                elements0.append(address1)
-                remaining0 -= 1
-        if remaining0 <= 0:
-            address0 = TreeNode(self._input[index1:self._offset], index1, elements0)
-            self._offset = self._offset
-        else:
-            address0 = FAILURE
-        self._cache['annotation'][index0] = (address0, self._offset)
+        self._cache['comment'][index0] = (address0, self._offset)
         return address0
 
     def _read_delim(self):

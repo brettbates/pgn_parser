@@ -6,11 +6,8 @@ key <- [A-Za-z]+
 value <- [^\"]*
 newline <- [\n]?
 
-move_text <- turn_no:turn_number delim white:turn delim black:turn delim?
-turn_number <- [0-9]+ "." 
-turn <- move tags?
+move_text <- move_number delim white:move delim? wcomment:comment? delim black:move delim? bcomment:comment? delim?
+move_number <- [0-9]+ "." 
 move <- [KQRNBP]? [a-h] [1-8]   
-tags <- anno_tag?
-anno_tag <- delim? "{" annotation:annotation "}"
-annotation <- [^}]*
+comment <- "{" [^\}]* "}" %make_comment
 delim <- [\s]?
