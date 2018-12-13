@@ -65,41 +65,31 @@ class Grammar(object):
             return cached[0]
         index1, elements0 = self._offset, []
         address1 = FAILURE
-        remaining0, index2, elements1, address2 = 0, self._offset, [], True
-        while address2 is not FAILURE:
-            address2 = self._read_tag_pair()
-            if address2 is not FAILURE:
-                elements1.append(address2)
-                remaining0 -= 1
-        if remaining0 <= 0:
-            address1 = TreeNode(self._input[index2:self._offset], index2, elements1)
-            self._offset = self._offset
-        else:
-            address1 = FAILURE
+        address1 = self._read_tag_pairs()
         if address1 is not FAILURE:
             elements0.append(address1)
-            address3 = FAILURE
-            index3 = self._offset
-            address3 = self._read_newline()
-            if address3 is FAILURE:
-                address3 = TreeNode(self._input[index3:index3], index3)
-                self._offset = index3
-            if address3 is not FAILURE:
-                elements0.append(address3)
-                address4 = FAILURE
-                remaining1, index4, elements2, address5 = 0, self._offset, [], True
-                while address5 is not FAILURE:
-                    address5 = self._read_move_text()
-                    if address5 is not FAILURE:
-                        elements2.append(address5)
-                        remaining1 -= 1
-                if remaining1 <= 0:
-                    address4 = TreeNode(self._input[index4:self._offset], index4, elements2)
+            address2 = FAILURE
+            index2 = self._offset
+            address2 = self._read_newline()
+            if address2 is FAILURE:
+                address2 = TreeNode(self._input[index2:index2], index2)
+                self._offset = index2
+            if address2 is not FAILURE:
+                elements0.append(address2)
+                address3 = FAILURE
+                remaining0, index3, elements1, address4 = 0, self._offset, [], True
+                while address4 is not FAILURE:
+                    address4 = self._read_move_text()
+                    if address4 is not FAILURE:
+                        elements1.append(address4)
+                        remaining0 -= 1
+                if remaining0 <= 0:
+                    address3 = TreeNode(self._input[index3:self._offset], index3, elements1)
                     self._offset = self._offset
                 else:
-                    address4 = FAILURE
-                if address4 is not FAILURE:
-                    elements0.append(address4)
+                    address3 = FAILURE
+                if address3 is not FAILURE:
+                    elements0.append(address3)
                 else:
                     elements0 = None
                     self._offset = index1
@@ -115,6 +105,26 @@ class Grammar(object):
             address0 = TreeNode1(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
         self._cache['root'][index0] = (address0, self._offset)
+        return address0
+
+    def _read_tag_pairs(self):
+        address0, index0 = FAILURE, self._offset
+        cached = self._cache['tag_pairs'].get(index0)
+        if cached:
+            self._offset = cached[1]
+            return cached[0]
+        remaining0, index1, elements0, address1 = 0, self._offset, [], True
+        while address1 is not FAILURE:
+            address1 = self._read_tag_pair()
+            if address1 is not FAILURE:
+                elements0.append(address1)
+                remaining0 -= 1
+        if remaining0 <= 0:
+            address0 = self._actions.make_tag_pairs(self._input, index1, self._offset, elements0)
+            self._offset = self._offset
+        else:
+            address0 = FAILURE
+        self._cache['tag_pairs'][index0] = (address0, self._offset)
         return address0
 
     def _read_tag_pair(self):
@@ -209,7 +219,7 @@ class Grammar(object):
         if elements0 is None:
             address0 = FAILURE
         else:
-            address0 = TreeNode2(self._input[index1:self._offset], index1, elements0)
+            address0 = self._actions.make_tag_pair(self._input, index1, self._offset, elements0)
             self._offset = self._offset
         self._cache['tag_pair'][index0] = (address0, self._offset)
         return address0

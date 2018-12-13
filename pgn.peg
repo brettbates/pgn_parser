@@ -1,7 +1,8 @@
 grammar PGN    
 
-root <- tag_pairs:tag_pair* newline? movetext:move_text*
-tag_pair <- "[" key " \"" value "\"]" newline?
+root <- tag_pairs:tag_pairs newline? movetext:move_text*
+tag_pairs <- tag_pair* %make_tag_pairs
+tag_pair <- "[" key " \"" value "\"]" newline? %make_tag_pair
 key <- [A-Za-z]+
 value <- [^\"]*
 newline <- [\n]?
