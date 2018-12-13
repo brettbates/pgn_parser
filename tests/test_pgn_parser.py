@@ -1,5 +1,5 @@
 import pgn
-from pgn_parser import Actions, Move
+from pgn_parser import Actions, Move, Score
 import pytest
 from unittest.mock import MagicMock
 
@@ -47,9 +47,35 @@ class TestParserActions:
         assert mt[0].black.san == "e5"
         assert mt[0].black.comment == "black comment"
 
+    def test_make_game(self):
+        input = '[Site "bmb.io]\n1. e4 e5 {white wins} 1-0'
+        g = Actions().make_game(input, 0, 0,
+                                     [{'Site': 'bmb.io'},
+                                      pgn.TreeNode('\n', 0),
+                                      [Move("1.", "e4", "", "e5", "white wins")],
+                                      pgn.TreeNode('1-0', 0)])
+        assert g.tag_pairs['Site'] == "bmb.io"
+        assert g.movetext[0].move_number == 1
+        assert g.movetext[0].white.san == "e4"
+        assert g.movetext[0].black.san == "e5"
+        assert g.movetext[0].black.comment == "white wins"
+        assert g.score.result == "w"
+
 class TestMove:
     def test_move_no_to_i(self):
         f = Move("1.","","","","").move_no_to_i
         assert f("1.") == 1
         assert f("2.") == 2
         assert f("300.") == 300
+
+class TestScore:
+    def test_make_score(self):
+        assert Score("0-1").white == "0"
+        assert Score("0-1").black == "1"
+        assert Score("0-1").result == "b"
+        assert Score("1-0").white == "1"
+        assert Score("1-0").black == "0"
+        assert Score("1-0").result == "w"
+        assert Score("1/2-1/2").white == "1/2"
+        assert Score("1/2-1/2").black == "1/2"
+        assert Score("1/2-1/2").result == "d"

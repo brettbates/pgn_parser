@@ -98,3 +98,13 @@ class TestParseMovetext(object):
         assert movetext[1].white.san == "d4"
         assert movetext[1].white.comment == "comment 2."
         assert movetext[1].black.san == "d5"
+
+@pytest.mark.usefixtures("compile_peg")
+class TestParse:
+    @pytest.mark.score
+    def test_parse_score(self):
+        moves = "[Site \"help\"]\n1. e4 e5 1-0"
+        parsed = pgn.parse(moves, actions=Actions())
+
+        import pdb; pdb.set_trace()
+        assert parsed.score.result == "w"

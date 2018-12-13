@@ -10,6 +10,7 @@ Feature: Parsing a pgn file
             | [Event "Let's Play!"]   | Event | Let's Play! |
             | [Site "Chess.com"]      | Site  | Chess.com   |
 
+
     Scenario Outline: Parse a multi tag_pair pgn header
         Given a pgn file with only a header of the tag pairs <tag_pairs>
          When we parse it
@@ -27,10 +28,19 @@ Feature: Parsing a pgn file
          Then we can access the moves node containing an array of correct Move objects with SAN's <SANW> <SANB>
 
         Examples: Movetext
-            | movetext             | SANW  | SANB     |
-            | 1. e4 e5             | e4    | e5       |
-            | 20. Nxa1 exd5        | Nxa1  | exd5     |
-            | 1. e4 e5\n2. d4 d5   | e4,d4 | e5,d5    | 
-            | 1. e4 e5\n2. Nf3 Nc6 | e4,d4 | Nf3, Nc6 | 
-            | 1. e4 e5\n 2. d4 d5  | e4,d4 | e5,d5    |
-            | 1. e4 e5 2.\nd4 d5   | e4,d4 | e5,d5    |
+            | movetext             | SANW   | SANB   |
+            | 1. e4 e5             | e4     | e5     |
+            | 1. e4 e5\n2. d4 d5   | e4,d4  | e5,d5  | 
+            | 1. e4 e5\n2. Nf3 Nc6 | e4,Nf3 | e5,Nc6 | 
+            | 1. e4 e5\n 2. d4 d5  | e4,d4  | e5,d5  |
+            | 1. e4 e5 2.\nd4 d5   | e4,d4  | e5,d5  |
+
+
+    Scenario Outline: Parse a full pgn file
+        Given the pgn file <f>
+         When we parse it
+         Then we should have a full Game that can be stringified to equal the file <g>
+
+        Examples: PGNs
+            | f      | g       |
+            | f1.pgn | f1.epgn |
