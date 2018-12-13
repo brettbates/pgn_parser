@@ -6,6 +6,7 @@ import subprocess
 @pytest.fixture
 def compile_peg():
     print(subprocess.call(["canopy", "pgn.peg", "--lang", "python"]))
+    return
 
 @pytest.mark.usefixtures("compile_peg")
 class TestParseTagPairs(object):
@@ -21,6 +22,12 @@ class TestParseTagPairs(object):
 
     def test_parse_tag_pairs(self):
         tag_pairs = '[Event "Let\'s Play!"]\n[Site "chess.com"]'
+        tag_pairs = pgn.parse(tag_pairs, actions=Actions()).tag_pairs
+        assert tag_pairs['Site'] == "chess.com"
+        assert tag_pairs['Event'] == "Let\'s Play!"
+
+    def test_parse_tag_pairs_space(self):
+        tag_pairs = '[Event "Let\'s Play!"] [Site "chess.com"]'
         tag_pairs = pgn.parse(tag_pairs, actions=Actions()).tag_pairs
         assert tag_pairs['Site'] == "chess.com"
         assert tag_pairs['Event'] == "Let\'s Play!"

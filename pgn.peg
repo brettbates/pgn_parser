@@ -1,14 +1,13 @@
 grammar PGN    
 
-root <- tag_pairs:tag_pairs newline? movetext:move_text*
+root <- tag_pairs:tag_pairs [\n]? movetext:move_text*
 tag_pairs <- tag_pair* %make_tag_pairs
-tag_pair <- "[" key " \"" value "\"]" newline? %make_tag_pair
+tag_pair <- "[" key " \"" value "\"]" dlm %make_tag_pair
 key <- [A-Za-z]+
 value <- [^\"]*
-newline <- [\n]?
 
-move_text <- move_number delim white:move delim? wcomment:comment? delim black:move delim? bcomment:comment? delim?
+move_text <- move_number dlm white:move dlm wcomment:comment? dlm black:move dlm bcomment:comment? dlm
 move_number <- [0-9]+ "." 
 move <- [KQRNBP]? [a-h] [1-8]   
 comment <- "{" [^\}]* "}" %make_comment
-delim <- [\s]?
+dlm <- [\s]?
