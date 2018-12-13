@@ -19,3 +19,16 @@ Feature: Parsing a pgn file
             | tag_pairs                                                     | tp_res        |
             | [Event "Let's Play!"]\n[Site "Chess.com"]                     | TEST_TP_2_RES |
             | [Event "Let's Play!"]\n[Site "Chess.com"] [Date "2018.12.13"] | TEST_TP_3_RES |
+
+
+    Scenario Outline: Parse a pgn containing only movetext
+        Given a pgn file with only movetext <movetext>
+         When we parse it
+         Then we can access the moves node containing an array of correct Move objects with SAN's <SAN>
+
+        Examples: Movetext
+            | movetext            | SAN         |
+            | 1. e4 e5            | e4,e5       |
+            | 1. e4 e5\n2. d4 d5  | e4,e5,d4,d5 | 
+            | 1. e4 e5\n 2. d4 d5 | e4,e5,d4,d5 |
+            | 1. e4 e5 2.\nd4 d5  | e4,e5,d4,d5 |

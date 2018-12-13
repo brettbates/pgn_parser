@@ -58,9 +58,9 @@ class Grammar(object):
     REGEX_8 = re.compile('^[^\\}]')
     REGEX_9 = re.compile('^[\\s]')
 
-    def _read_root(self):
+    def _read_game(self):
         address0, index0 = FAILURE, self._offset
-        cached = self._cache['root'].get(index0)
+        cached = self._cache['game'].get(index0)
         if cached:
             self._offset = cached[1]
             return cached[0]
@@ -92,7 +92,7 @@ class Grammar(object):
                 address3 = FAILURE
                 remaining0, index3, elements1, address4 = 0, self._offset, [], True
                 while address4 is not FAILURE:
-                    address4 = self._read_move_text()
+                    address4 = self._read_movetext()
                     if address4 is not FAILURE:
                         elements1.append(address4)
                         remaining0 -= 1
@@ -117,7 +117,7 @@ class Grammar(object):
         else:
             address0 = TreeNode1(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
-        self._cache['root'][index0] = (address0, self._offset)
+        self._cache['game'][index0] = (address0, self._offset)
         return address0
 
     def _read_tag_pairs(self):
@@ -297,9 +297,9 @@ class Grammar(object):
         self._cache['value'][index0] = (address0, self._offset)
         return address0
 
-    def _read_move_text(self):
+    def _read_movetext(self):
         address0, index0 = FAILURE, self._offset
-        cached = self._cache['move_text'].get(index0)
+        cached = self._cache['movetext'].get(index0)
         if cached:
             self._offset = cached[1]
             return cached[0]
@@ -385,9 +385,9 @@ class Grammar(object):
         if elements0 is None:
             address0 = FAILURE
         else:
-            address0 = TreeNode3(self._input[index1:self._offset], index1, elements0)
+            address0 = self._actions.make_movetext(self._input, index1, self._offset, elements0)
             self._offset = self._offset
-        self._cache['move_text'][index0] = (address0, self._offset)
+        self._cache['movetext'][index0] = (address0, self._offset)
         return address0
 
     def _read_move_number(self):
@@ -650,7 +650,7 @@ class Parser(Grammar):
         self._expected = []
 
     def parse(self):
-        tree = self._read_root()
+        tree = self._read_game()
         if tree is not FAILURE and self._offset == self._input_size:
             return tree
         if not self._expected:

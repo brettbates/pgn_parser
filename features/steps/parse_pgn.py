@@ -29,3 +29,13 @@ def step_we_can_access_tagpairs(context, tp_res):
     for k in r.keys():
         assert_that(context.pgn.tag_pairs, has_item(k))
         assert_that(context.pgn.tag_pairs[k], equal_to(r[k]))
+
+@given(u'a pgn file with only movetext {movetext}')
+def step_a_movetext_only_pgn(context, movetext):
+    context.pgn_str = movetext.replace("\\n", "\n")
+
+
+@then(u'we can access the moves node containing an array of correct Move objects with {sans}')
+def step_we_can_access_moves(context, sans):
+    for i, san in enumerate(sans.split(',')):
+        assert_that(context.pgn.moves[0].san, equal_to(san))
