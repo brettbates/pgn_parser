@@ -24,11 +24,11 @@ Feature: Parsing a pgn file
     Scenario Outline: Parse a pgn containing only movetext
         Given a pgn file with only movetext <movetext>
          When we parse it
-         Then we can access the moves node containing an array of correct Move objects with SAN's <SAN>
+         Then we can access the moves node containing an array of correct Move objects with SAN's <SANW> <SANB>
 
         Examples: Movetext
-            | movetext            | SAN         |
-            | 1. e4 e5            | e4,e5       |
-            | 1. e4 e5\n2. d4 d5  | e4,e5,d4,d5 | 
-            | 1. e4 e5\n 2. d4 d5 | e4,e5,d4,d5 |
-            | 1. e4 e5 2.\nd4 d5  | e4,e5,d4,d5 |
+            | movetext            | SANW  | SANB   |
+            | 1. e4 e5            | e4    | e5     |
+            | 1. e4 e5\n2. d4 d5  | e4,d4 | e5,d5  | 
+            | 1. e4 e5\n 2. d4 d5 | e4,d4 | e5,d5  |
+            | 1. e4 e5 2.\nd4 d5  | e4,d4 | e5,d5  |

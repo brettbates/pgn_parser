@@ -34,7 +34,7 @@ class TreeNode3(TreeNode):
         self.move_number = elements[0]
         self.dlm = elements[9]
         self.white = elements[2]
-        self.move = elements[6]
+        self.san = elements[6]
         self.wcomment = elements[4]
         self.black = elements[6]
         self.bcomment = elements[8]
@@ -90,17 +90,7 @@ class Grammar(object):
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
-                remaining0, index3, elements1, address4 = 0, self._offset, [], True
-                while address4 is not FAILURE:
-                    address4 = self._read_movetext()
-                    if address4 is not FAILURE:
-                        elements1.append(address4)
-                        remaining0 -= 1
-                if remaining0 <= 0:
-                    address3 = TreeNode(self._input[index3:self._offset], index3, elements1)
-                    self._offset = self._offset
-                else:
-                    address3 = FAILURE
+                address3 = self._read_movetext()
                 if address3 is not FAILURE:
                     elements0.append(address3)
                 else:
@@ -303,6 +293,26 @@ class Grammar(object):
         if cached:
             self._offset = cached[1]
             return cached[0]
+        remaining0, index1, elements0, address1 = 0, self._offset, [], True
+        while address1 is not FAILURE:
+            address1 = self._read_move()
+            if address1 is not FAILURE:
+                elements0.append(address1)
+                remaining0 -= 1
+        if remaining0 <= 0:
+            address0 = self._actions.make_movetext(self._input, index1, self._offset, elements0)
+            self._offset = self._offset
+        else:
+            address0 = FAILURE
+        self._cache['movetext'][index0] = (address0, self._offset)
+        return address0
+
+    def _read_move(self):
+        address0, index0 = FAILURE, self._offset
+        cached = self._cache['move'].get(index0)
+        if cached:
+            self._offset = cached[1]
+            return cached[0]
         index1, elements0 = self._offset, []
         address1 = FAILURE
         address1 = self._read_move_number()
@@ -313,7 +323,7 @@ class Grammar(object):
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
-                address3 = self._read_move()
+                address3 = self._read_san()
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
@@ -333,7 +343,7 @@ class Grammar(object):
                             if address6 is not FAILURE:
                                 elements0.append(address6)
                                 address7 = FAILURE
-                                address7 = self._read_move()
+                                address7 = self._read_san()
                                 if address7 is not FAILURE:
                                     elements0.append(address7)
                                     address8 = FAILURE
@@ -385,9 +395,9 @@ class Grammar(object):
         if elements0 is None:
             address0 = FAILURE
         else:
-            address0 = self._actions.make_movetext(self._input, index1, self._offset, elements0)
+            address0 = TreeNode3(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
-        self._cache['movetext'][index0] = (address0, self._offset)
+        self._cache['move'][index0] = (address0, self._offset)
         return address0
 
     def _read_move_number(self):
@@ -453,9 +463,9 @@ class Grammar(object):
         self._cache['move_number'][index0] = (address0, self._offset)
         return address0
 
-    def _read_move(self):
+    def _read_san(self):
         address0, index0 = FAILURE, self._offset
-        cached = self._cache['move'].get(index0)
+        cached = self._cache['san'].get(index0)
         if cached:
             self._offset = cached[1]
             return cached[0]
@@ -526,7 +536,7 @@ class Grammar(object):
         else:
             address0 = TreeNode(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
-        self._cache['move'][index0] = (address0, self._offset)
+        self._cache['san'][index0] = (address0, self._offset)
         return address0
 
     def _read_comment(self):

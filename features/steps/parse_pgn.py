@@ -35,7 +35,8 @@ def step_a_movetext_only_pgn(context, movetext):
     context.pgn_str = movetext.replace("\\n", "\n")
 
 
-@then(u'we can access the moves node containing an array of correct Move objects with {sans}')
-def step_we_can_access_moves(context, sans):
-    for i, san in enumerate(sans.split(',')):
-        assert_that(context.pgn.moves[0].san, equal_to(san))
+@then(u'we can access the moves node containing an array of correct Move objects with SAN\'s {sanw} {sanb}')
+def step_we_can_access_moves(context, sanw, sanb):
+    for i, san in enumerate(sanw.split(',')):
+        assert_that(context.pgn.movetext[i].white.san, equal_to(san))
+        assert_that(context.pgn.movetext[i].black.san, equal_to(sanb.split(',')[i]))
