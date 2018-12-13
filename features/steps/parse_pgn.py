@@ -1,4 +1,5 @@
 import pgn
+import difflib
 import os
 from pgn_parser import Actions
 from behave import given, when, then
@@ -50,6 +51,9 @@ def step_a_pgn_file(context, f):
 
 @then(u'we should have a full Game that can be stringified to equal the file {g}')
 def step_test_full_game_file(context, g):
-    print(context.pgn_str)
-    print(context.pgn)
-    assert_that(context.pgn, equal_to(open('./features/steps/'+g).read()))
+
+    correct = open('./features/steps/'+g).read()
+    diff = difflib.ndiff(correct.splitlines(1), str(context.pgn).splitlines(1))
+    for l in diff:
+        print(l)
+    assert_that(len(list(diff)), equal_to(0))

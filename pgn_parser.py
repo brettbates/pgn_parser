@@ -16,15 +16,22 @@ class Actions:
     def make_comment(self, input, start, end, elements):
         return elements[1].text.strip('{}')
 
-
     def make_movetext(self, input, start, end, elements):
         mt = []
         for e in elements:
+            if type(e.wcomment) == str:
+                wcomment = e.wcomment
+            else:
+                wcomment = ""
+            if type(e.bcomment) == str:
+                bcomment = e.bcomment
+            else:
+                bcomment = ""
             mt.append(Move(e.move_number.text,
                            e.white.text,
-                           e.wcomment,
+                           wcomment,
                            e.black.text,
-                           e.bcomment))
+                           bcomment))
         return mt
 
     def make_score(self, input, start, end, elements):
@@ -53,7 +60,10 @@ class Ply:
         self.comment = comment
 
     def __str__(self):
-        return "{}: {} \{{}\}".format(self.colour, self.san, self.comment)
+        out = self.san
+        if self.comment != "":
+            out += " {" + self.comment + "}"
+        return out
 
 
 class Move:
@@ -63,7 +73,9 @@ class Move:
         self.black = Ply("b", black, bcomment)
 
     def __str__(self):
-        return "{}. {} {}".format(self.move_number, self.white.san, self.black.san)
+        out = "{}.".format(self.move_number)
+        out += " {} {}".format(str(self.white), str(self.black))
+        return out
 
     def __repr__(self):
         return self.__str__()
@@ -103,13 +115,25 @@ class Game:
 
     def str_tag_pairs(self):
         ## TODO Should be in specific order
-        return ' '.join(['[{} "{}"]\n'.format(k, self.tag_pairs[k]) for k in self.tag_pairs.keys()]) + "\n"
+        out = ""
+        reqd = ["Event", "Site", "Date", "Round", "White", "Black", "Result"]
+        # The Seven Tag Roster in order
+        for r in reqd:
+            out += '[{} "{}"]\n'.format(r, self.tag_pairs[r])
+
+        # The rest of the the custom tag pairs
+        for k in self.tag_pairs.keys():
+            if k not in reqd:
+                out += '[{} "{}"]\n'.format(k, self.tag_pairs[k])
+
+        out += "\n"
+        return out
 
     def str_movetext(self):
         out = ""
-        for m in self.movetext:
+        for i, m in enumerate(self.movetext):
             out += str(m)
+            if i + 1 != len(self.movetext):
+               out += "\n"
         out += " "
         return out
-
-

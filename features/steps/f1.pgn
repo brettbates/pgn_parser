@@ -5,12 +5,6 @@
 [White "guilherme_1910"]
 [Black "bmbio"]
 [Result "0-1"]
-[ECO "B40"]
-[WhiteElo "1298"]
-[BlackElo "1388"]
-[Annotator "brett"]
-[PlyCount "30"]
-[EventDate "2018.??.??"]
 [TimeControl "1/259200:0"]
 
 1. e4 e6 2. d4 d5 {bmbio won by resignation} 0-1

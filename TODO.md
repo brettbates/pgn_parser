@@ -7,3 +7,5 @@ The spec calls for the importer to be able to parse a much looser format of tap 
 
 ## Misc
 What happens if a comment matches [\s]?
+
+Need to test how half moves are handled 21...e4 for example
