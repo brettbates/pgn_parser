@@ -27,11 +27,22 @@ class Actions:
                            e.bcomment))
         return mt
 
-    def make_game(self, input, start, end, elements):
-        import pdb; pdb.set_trace()
-        e = [e for e in elements if not (type(e) == pgn.TreeNode and re.match("[\n]", e.text))]
+    def make_score(self, input, start, end, elements):
+        score = input[start:end]
+        if score == "*":
+            w, b = "*", "*"
+        else:
+            w, b = score.split('-')
+        return Score(w, b)
 
-        g = Game(e[0], e[1], Score(e[2].text))
+    def make_game(self, input, start, end, elements):
+        e = elements
+
+        if type(e[3]) == Score:
+            s = e[3]
+        else:
+            s = Score('*', '*')
+        g = Game(e[0], e[2], s)
         return g
 
 
@@ -57,11 +68,7 @@ class Move:
 
 
 class Score:
-    def __init__(self, score):
-        if score == "*":
-            w, b = "*", "*"
-        else:
-            w, b = score.split('-')
+    def __init__(self, w, b):
         self.white = w
         self.black = b
         self.result = self.get_result()

@@ -58,34 +58,7 @@ class Grammar(object):
     REGEX_7 = re.compile('^[1-8]')
     REGEX_8 = re.compile('^[^\\}]')
     REGEX_9 = re.compile('^[\\s]')
-
-    def _read_root(self):
-        address0, index0 = FAILURE, self._offset
-        cached = self._cache['root'].get(index0)
-        if cached:
-            self._offset = cached[1]
-            return cached[0]
-        index1 = self._offset
-        address0 = self._read_game()
-        if address0 is FAILURE:
-            self._offset = index1
-            chunk0 = None
-            if self._offset < self._input_size:
-                chunk0 = self._input[self._offset:self._offset + 0]
-            if chunk0 == '':
-                address0 = self._actions.make_game(self._input, self._offset, self._offset + 0)
-                self._offset = self._offset + 0
-            else:
-                address0 = FAILURE
-                if self._offset > self._failure:
-                    self._failure = self._offset
-                    self._expected = []
-                if self._offset == self._failure:
-                    self._expected.append('""')
-            if address0 is FAILURE:
-                self._offset = index1
-        self._cache['root'][index0] = (address0, self._offset)
-        return address0
+    REGEX_10 = re.compile('^[012\\/\\-\\*]')
 
     def _read_game(self):
         address0, index0 = FAILURE, self._offset
@@ -145,7 +118,7 @@ class Grammar(object):
         if elements0 is None:
             address0 = FAILURE
         else:
-            address0 = TreeNode1(self._input[index1:self._offset], index1, elements0)
+            address0 = self._actions.make_game(self._input, index1, self._offset, elements0)
             self._offset = self._offset
         self._cache['game'][index0] = (address0, self._offset)
         return address0
@@ -693,67 +666,29 @@ class Grammar(object):
         if cached:
             self._offset = cached[1]
             return cached[0]
-        index1 = self._offset
-        chunk0 = None
-        if self._offset < self._input_size:
-            chunk0 = self._input[self._offset:self._offset + 3]
-        if chunk0 == '1-0':
-            address0 = TreeNode(self._input[self._offset:self._offset + 3], self._offset)
-            self._offset = self._offset + 3
-        else:
-            address0 = FAILURE
-            if self._offset > self._failure:
-                self._failure = self._offset
-                self._expected = []
-            if self._offset == self._failure:
-                self._expected.append('"1-0"')
-        if address0 is FAILURE:
-            self._offset = index1
-            chunk1 = None
+        remaining0, index1, elements0, address1 = 1, self._offset, [], True
+        while address1 is not FAILURE:
+            chunk0 = None
             if self._offset < self._input_size:
-                chunk1 = self._input[self._offset:self._offset + 3]
-            if chunk1 == '0-1':
-                address0 = TreeNode(self._input[self._offset:self._offset + 3], self._offset)
-                self._offset = self._offset + 3
+                chunk0 = self._input[self._offset:self._offset + 1]
+            if chunk0 is not None and Grammar.REGEX_10.search(chunk0):
+                address1 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+                self._offset = self._offset + 1
             else:
-                address0 = FAILURE
+                address1 = FAILURE
                 if self._offset > self._failure:
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('"0-1"')
-            if address0 is FAILURE:
-                self._offset = index1
-                chunk2 = None
-                if self._offset < self._input_size:
-                    chunk2 = self._input[self._offset:self._offset + 7]
-                if chunk2 == '1/2-1/2':
-                    address0 = TreeNode(self._input[self._offset:self._offset + 7], self._offset)
-                    self._offset = self._offset + 7
-                else:
-                    address0 = FAILURE
-                    if self._offset > self._failure:
-                        self._failure = self._offset
-                        self._expected = []
-                    if self._offset == self._failure:
-                        self._expected.append('"1/2-1/2"')
-                if address0 is FAILURE:
-                    self._offset = index1
-                    chunk3 = None
-                    if self._offset < self._input_size:
-                        chunk3 = self._input[self._offset:self._offset + 1]
-                    if chunk3 == '*':
-                        address0 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
-                        self._offset = self._offset + 1
-                    else:
-                        address0 = FAILURE
-                        if self._offset > self._failure:
-                            self._failure = self._offset
-                            self._expected = []
-                        if self._offset == self._failure:
-                            self._expected.append('"*"')
-                    if address0 is FAILURE:
-                        self._offset = index1
+                    self._expected.append('[012/\\-\\*]')
+            if address1 is not FAILURE:
+                elements0.append(address1)
+                remaining0 -= 1
+        if remaining0 <= 0:
+            address0 = self._actions.make_score(self._input, index1, self._offset, elements0)
+            self._offset = self._offset
+        else:
+            address0 = FAILURE
         self._cache['score'][index0] = (address0, self._offset)
         return address0
 
@@ -770,7 +705,7 @@ class Parser(Grammar):
         self._expected = []
 
     def parse(self):
-        tree = self._read_root()
+        tree = self._read_game()
         if tree is not FAILURE and self._offset == self._input_size:
             return tree
         if not self._expected:

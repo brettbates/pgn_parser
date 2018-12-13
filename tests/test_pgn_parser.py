@@ -53,7 +53,7 @@ class TestParserActions:
                                      [{'Site': 'bmb.io'},
                                       pgn.TreeNode('\n', 0),
                                       [Move("1.", "e4", "", "e5", "white wins")],
-                                      pgn.TreeNode('1-0', 0)])
+                                      Score('1', '0')])
         assert g.tag_pairs['Site'] == "bmb.io"
         assert g.movetext[0].move_number == 1
         assert g.movetext[0].white.san == "e4"
@@ -70,12 +70,12 @@ class TestMove:
 
 class TestScore:
     def test_make_score(self):
-        assert Score("0-1").white == "0"
-        assert Score("0-1").black == "1"
-        assert Score("0-1").result == "b"
-        assert Score("1-0").white == "1"
-        assert Score("1-0").black == "0"
-        assert Score("1-0").result == "w"
-        assert Score("1/2-1/2").white == "1/2"
-        assert Score("1/2-1/2").black == "1/2"
-        assert Score("1/2-1/2").result == "d"
+        assert Score("0","1").white == "0"
+        assert Score("0","1").black == "1"
+        assert Score("0","1").result == "b"
+        assert Score("1","0").white == "1"
+        assert Score("1","0").black == "0"
+        assert Score("1","0").result == "w"
+        assert Score("1/2","1/2").white == "1/2"
+        assert Score("1/2","1/2").black == "1/2"
+        assert Score("1/2","1/2").result == "d"
