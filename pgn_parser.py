@@ -65,6 +65,9 @@ class Move:
     def __str__(self):
         return "{}. {} {}".format(self.move_number, self.white.san, self.black.san)
 
+    def __repr__(self):
+        return self.__str__()
+
     def move_no_to_i(self, move_number):
         no = int(re.match("([0-9]+)\.", move_number).groups()[0])
         return no
@@ -91,3 +94,22 @@ class Game:
         self.tag_pairs = tag_pairs
         self.movetext = movetext
         self.score = score
+
+    def __str__(self):
+        out = self.str_tag_pairs()
+        out += self.str_movetext()
+        out += str(self.score)
+        return out
+
+    def str_tag_pairs(self):
+        ## TODO Should be in specific order
+        return ' '.join(['[{} "{}"]\n'.format(k, self.tag_pairs[k]) for k in self.tag_pairs.keys()]) + "\n"
+
+    def str_movetext(self):
+        out = ""
+        for m in self.movetext:
+            out += str(m)
+        out += " "
+        return out
+
+

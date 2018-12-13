@@ -80,3 +80,4 @@ class TestScore:
         assert Score("1/2","1/2").black == "1/2"
         assert Score("1/2","1/2").result == "1/2-1/2"
         assert Score("*","*").result == "*"
+
