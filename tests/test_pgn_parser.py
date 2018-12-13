@@ -59,7 +59,7 @@ class TestParserActions:
         assert g.movetext[0].white.san == "e4"
         assert g.movetext[0].black.san == "e5"
         assert g.movetext[0].black.comment == "white wins"
-        assert g.score.result == "w"
+        assert g.score.result == "1-0"
 
 class TestMove:
     def test_move_no_to_i(self):
@@ -72,10 +72,11 @@ class TestScore:
     def test_make_score(self):
         assert Score("0","1").white == "0"
         assert Score("0","1").black == "1"
-        assert Score("0","1").result == "b"
+        assert Score("0","1").result == "0-1"
         assert Score("1","0").white == "1"
         assert Score("1","0").black == "0"
-        assert Score("1","0").result == "w"
+        assert Score("1","0").result == "1-0"
         assert Score("1/2","1/2").white == "1/2"
         assert Score("1/2","1/2").black == "1/2"
-        assert Score("1/2","1/2").result == "d"
+        assert Score("1/2","1/2").result == "1/2-1/2"
+        assert Score("*","*").result == "*"

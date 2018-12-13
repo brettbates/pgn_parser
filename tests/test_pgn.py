@@ -105,7 +105,7 @@ class TestParse:
     def test_parse_score(self):
         moves = "[Site \"help\"]\n1. e4 e5 1-0"
         parsed = pgn.parse(moves, actions=Actions())
-        assert parsed.score.result == "w"
+        assert parsed.score.result == "1-0"
 
 @pytest.mark.usefixtures("compile_peg")
 class TestGame:
@@ -116,4 +116,4 @@ class TestGame:
         assert parsed.tag_pairs['Site'] == "help"
         assert parsed.movetext[0].white.san == "e4"
         assert parsed.movetext[0].black.san == "e5"
-        assert parsed.score.result == "w"
+        assert parsed.score.result == "1-0"

@@ -52,6 +52,9 @@ class Ply:
         self.san = san
         self.comment = comment
 
+    def __str__(self):
+        return "{}: {} \{{}\}".format(self.colour, self.san, self.comment)
+
 
 class Move:
     def __init__(self, move_number, white, wcomment, black, bcomment):
@@ -59,7 +62,7 @@ class Move:
         self.white = Ply("w", white, wcomment)
         self.black = Ply("b", black, bcomment)
 
-    def __repr__(self):
+    def __str__(self):
         return "{}. {} {}".format(self.move_number, self.white.san, self.black.san)
 
     def move_no_to_i(self, move_number):
@@ -73,15 +76,14 @@ class Score:
         self.black = b
         self.result = self.get_result()
 
+    def __str__(self):
+        return self.result
+
     def get_result(self):
-        if self.white == "1":
-            return "w"
-        elif self.black == "1":
-            return "b"
-        elif self.white == "1/2":
-            return "d"
-        else:
+        if self.white == "*":
             return "*"
+        else:
+            return "{}-{}".format(self.white, self.black)
 
 
 class Game:
