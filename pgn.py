@@ -95,7 +95,7 @@ FAILURE = object()
 
 class Grammar(object):
     REGEX_1 = re.compile('^[\\n]')
-    REGEX_2 = re.compile('^[A-Za-z]')
+    REGEX_2 = re.compile('^[A-Za-z0-9_]')
     REGEX_3 = re.compile('^[^\\"]')
     REGEX_4 = re.compile('^[0-9]')
     REGEX_5 = re.compile('^[KQRNBP]')
@@ -302,7 +302,7 @@ class Grammar(object):
                     self._failure = self._offset
                     self._expected = []
                 if self._offset == self._failure:
-                    self._expected.append('[A-Za-z]')
+                    self._expected.append('[A-Za-z0-9_]')
             if address1 is not FAILURE:
                 elements0.append(address1)
                 remaining0 -= 1

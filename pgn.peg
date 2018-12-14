@@ -3,7 +3,7 @@ grammar PGN
 game <- tag_pairs:tag_pairs [\n]? movetext:movetext score:score? %make_game
 tag_pairs <- tag_pair* %make_tag_pairs
 tag_pair <- "[" key " \"" value "\"]" dlm %make_tag_pair
-key <- [A-Za-z]+
+key <- [A-Za-z0-9_]+
 value <- [^\"]*
 
 movetext <- move* %make_movetext
