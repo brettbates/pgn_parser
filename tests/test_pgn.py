@@ -80,7 +80,6 @@ class TestParseMovetext(object):
         assert movetext.white.san == "O-O"
         assert movetext.black.san == "O-O-O"
 
-    @pytest.mark.wip
     def test_parse_san_disambiguation_file(self):
         moves = '9. Ncxd5 Nce5'
         movetext = pgn.parse(moves, actions=Actions()).movetext[0]
@@ -88,7 +87,6 @@ class TestParseMovetext(object):
         assert movetext.white.san == "Ncxd5"
         assert movetext.black.san == "Nce5"
 
-    @pytest.mark.wip
     def test_parse_san_disambiguation_rank(self):
         moves = '9. N3xd5 N6e5'
         movetext = pgn.parse(moves, actions=Actions()).movetext[0]
@@ -96,7 +94,6 @@ class TestParseMovetext(object):
         assert movetext.white.san == "N3xd5"
         assert movetext.black.san == "N6e5"
 
-    @pytest.mark.wip
     def test_parse_san_disambiguation_square(self):
         moves = '9. Nc3xd5 Nc6e5'
         movetext = pgn.parse(moves, actions=Actions()).movetext[0]

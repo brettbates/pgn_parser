@@ -19,6 +19,8 @@ Feature: Parsing a pgn file
         Examples: Tag Pairs
             | tag_pairs                                                     | tp_res        |
             | [Event "Let's Play!"]\n[Site "Chess.com"]                     | TEST_TP_2_RES |
+            | [Event "Let's Play!"] [Site "Chess.com"]                      | TEST_TP_2_RES |
+            | [Event "Let's Play!"][Site "Chess.com"]                       | TEST_TP_2_RES |
             | [Event "Let's Play!"]\n[Site "Chess.com"] [Date "2018.12.13"] | TEST_TP_3_RES |
 
 
