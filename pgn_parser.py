@@ -1,5 +1,6 @@
 import pgn
 import re
+from collections import OrderedDict
 
 class Actions:
     def make_tag_pair(self, input, start, end, elements):
@@ -7,7 +8,7 @@ class Actions:
         return tp
 
     def make_tag_pairs(self, input, start, end, elements):
-        tps = {}
+        tps = TagPair()
         for e in elements:
             k = [k for k in e.keys()][0]
             tps[k] = e[k]
@@ -52,6 +53,20 @@ class Actions:
         g = Game(e[0], e[2], s)
         return g
 
+class TagPair(OrderedDict):
+    def __str__(self):
+        out = ""
+        # reqd = ["Event", "Site", "Date", "Round", "White", "Black", "Result"]
+        # The Seven Tag Roster in order
+        # for r in reqd:
+        #     out += '[{} "{}"]\n'.format(r, self[r])
+
+        # The rest of the the custom tag pairs
+        for k in self.keys():
+            out += '[{} "{}"]\n'.format(k, self[k])
+
+        out += "\n"
+        return out
 
 class Ply:
     def __init__(self, colour, san, comment):
@@ -112,26 +127,11 @@ class Game:
         self.score = score
 
     def __str__(self):
-        out = self.str_tag_pairs()
+        out = str(self.tag_pairs)
         out += self.str_movetext()
         out += str(self.score)
         return out
 
-    def str_tag_pairs(self):
-        ## TODO Should be in specific order
-        out = ""
-        reqd = ["Event", "Site", "Date", "Round", "White", "Black", "Result"]
-        # The Seven Tag Roster in order
-        for r in reqd:
-            out += '[{} "{}"]\n'.format(r, self.tag_pairs[r])
-
-        # The rest of the the custom tag pairs
-        for k in self.tag_pairs.keys():
-            if k not in reqd:
-                out += '[{} "{}"]\n'.format(k, self.tag_pairs[k])
-
-        out += "\n"
-        return out
 
     def str_movetext(self):
         out = ""

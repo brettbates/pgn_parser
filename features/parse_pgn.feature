@@ -28,6 +28,19 @@ Feature: Parsing a pgn file
             | [Event "Let's Play!"]\n[Site "Chess.com"] [Date "2018.12.13"] | TEST_TP_3_RES |
 
 
+    @wip
+    Scenario Outline: Parse a multi tag_pair pgn header in order
+        Given a pgn file with only a header of the tag pairs <tag_pairs>
+         When we parse it
+         Then we can string a TagPairs dict in order <tp_res>
+
+        Examples: Tag Pairs
+            | tag_pairs                                                                                     | tp_res            |
+            | [Event "Let's Play!"]\n[Site "Chess.com"]\n[Date "2018.12.13"]                                | TEST_TP_3_RES_ORD |
+            | [Event "Let's Play!"]\n[Site "Chess.com"]\n[Custom "xyz"]                                     | TEST_TP_4_RES_ORD |
+            | [Event "Let's Play!"]\n[Site "Chess.com"]\n[Custom "xyz"]\n[Custom2 "xyz2"]\n[Custom3 "xyz3"] | TEST_TP_5_RES_ORD |
+
+
     Scenario Outline: Parse a pgn containing only movetext
         Given a pgn file with only movetext <movetext>
          When we parse it

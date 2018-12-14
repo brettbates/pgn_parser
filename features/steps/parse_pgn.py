@@ -32,6 +32,16 @@ def step_we_can_access_tagpairs(context, tp_res):
         assert_that(context.pgn.tag_pairs, has_item(k))
         assert_that(context.pgn.tag_pairs[k], equal_to(r[k]))
 
+@then(u'we can string a TagPairs dict in order {tp_res}')
+def step_string_tagpairs_ordered(context, tp_res):
+    TEST_TP_RES = {
+            "TEST_TP_3_RES_ORD": '[Event "Let\'s Play!"]\n[Site "Chess.com"]\n[Date "2018.12.13"]\n\n',
+            "TEST_TP_4_RES_ORD": '[Event "Let\'s Play!"]\n[Site "Chess.com"]\n[Custom "xyz"]\n\n',
+            "TEST_TP_5_RES_ORD": '[Event "Let\'s Play!"]\n[Site "Chess.com"]\n[Custom "xyz"]\n[Custom2 "xyz2"]\n[Custom3 "xyz3"]\n\n'}
+    r = TEST_TP_RES[tp_res]
+    assert_that(str(context.pgn.tag_pairs), equal_to(r))
+
+
 @given(u'a pgn file with only movetext {movetext}')
 def step_a_movetext_only_pgn(context, movetext):
     context.pgn_str = movetext.replace("\\n", "\n")
