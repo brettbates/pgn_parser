@@ -164,7 +164,7 @@ class Score:
             w, b = score.split('-')
         self.white = w
         self.black = b
-        self.result = self.get_result()
+        self.result = str(self)
 
     def __str__(self):
         """Stringifies the score to one of the leg possiblities
@@ -172,10 +172,6 @@ class Score:
         Returns:
            1-0, 0-1, 1/2-1/2 or *
         """
-        return self.result
-
-    def get_result(self):
-        # TODO Perhaps should just be __str__ no need for abstration
         if self.white == "*":
             return "*"
         else:
