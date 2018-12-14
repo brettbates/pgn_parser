@@ -16,6 +16,26 @@ class TestParseTagPairs(object):
         tag_pairs = pgn.parse(tag_pair, actions=Actions()).tag_pairs
         assert tag_pairs['Site'] == "chess.com"
 
+    def test_parse_tag_pair_1n(self):
+        tag_pair = '[Site\n"chess.com"]'
+        tag_pairs = pgn.parse(tag_pair, actions=Actions()).tag_pairs
+        assert tag_pairs['Site'] == "chess.com"
+
+    def test_parse_tag_pair_2n(self):
+        tag_pair = '[Site\n"chess.com"\n]'
+        tag_pairs = pgn.parse(tag_pair, actions=Actions()).tag_pairs
+        assert tag_pairs['Site'] == "chess.com"
+
+    def test_parse_tag_pair_3n(self):
+        tag_pair = '[\nSite\n"chess.com"\n]'
+        tag_pairs = pgn.parse(tag_pair, actions=Actions()).tag_pairs
+        assert tag_pairs['Site'] == "chess.com"
+
+    def test_parse_tag_pair_3ws(self):
+        tag_pair = '[ Site\n"chess.com"\t]'
+        tag_pairs = pgn.parse(tag_pair, actions=Actions()).tag_pairs
+        assert tag_pairs['Site'] == "chess.com"
+
     def test_parse_tag_pair_newline(self):
         tag_pair = '[Site "chess.com"]\n'
         tag_pairs = pgn.parse(tag_pair, actions=Actions()).tag_pairs

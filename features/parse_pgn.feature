@@ -6,9 +6,12 @@ Feature: Parsing a pgn file
          Then we can access a TagPair of k <tp_k>, v <tp_v>
 
         Examples: Tag Pairs
-            | tag_pairs               | tp_k  | tp_v        |
-            | [Event "Let's Play!"]   | Event | Let's Play! |
-            | [Site "Chess.com"]      | Site  | Chess.com   |
+            | tag_pairs                  | tp_k  | tp_v        |
+            | [Event "Let's Play!"]      | Event | Let's Play! |
+            | [Event\n"Let's Play!"]     | Event | Let's Play! |
+            | [\nEvent\n"Let's Play!"]   | Event | Let's Play! |
+            | [\nEvent\n"Let's Play!"\n] | Event | Let's Play! |
+            | [Site "Chess.com"]         | Site  | Chess.com   |
 
 
     Scenario Outline: Parse a multi tag_pair pgn header
@@ -19,7 +22,7 @@ Feature: Parsing a pgn file
         Examples: Tag Pairs
             | tag_pairs                                                     | tp_res        |
             | [Event "Let's Play!"]\n[Site "Chess.com"]                     | TEST_TP_2_RES |
-            | [Event\n"Let's Play!"]\n[Site "Chess.com"]                     | TEST_TP_2_RES |
+            | [Event\n"Let's Play!"]\n[Site "Chess.com"]                    | TEST_TP_2_RES |
             | [Event "Let's Play!"] [Site "Chess.com"]                      | TEST_TP_2_RES |
             | [Event "Let's Play!"][Site "Chess.com"]                       | TEST_TP_2_RES |
             | [Event "Let's Play!"]\n[Site "Chess.com"] [Date "2018.12.13"] | TEST_TP_3_RES |
