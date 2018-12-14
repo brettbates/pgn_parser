@@ -24,9 +24,9 @@ class TreeNode1(TreeNode):
 class TreeNode2(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode2, self).__init__(text, offset, elements)
-        self.key = elements[1]
-        self.value = elements[3]
-        self.dlm = elements[5]
+        self.dlm = elements[9]
+        self.key = elements[2]
+        self.value = elements[5]
 
 
 class TreeNode3(TreeNode):
@@ -213,49 +213,89 @@ class Grammar(object):
         if address1 is not FAILURE:
             elements0.append(address1)
             address2 = FAILURE
-            address2 = self._read_key()
+            address2 = self._read_dlm()
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
-                chunk1 = None
-                if self._offset < self._input_size:
-                    chunk1 = self._input[self._offset:self._offset + 2]
-                if chunk1 == ' "':
-                    address3 = TreeNode(self._input[self._offset:self._offset + 2], self._offset)
-                    self._offset = self._offset + 2
-                else:
-                    address3 = FAILURE
-                    if self._offset > self._failure:
-                        self._failure = self._offset
-                        self._expected = []
-                    if self._offset == self._failure:
-                        self._expected.append('" \\""')
+                address3 = self._read_key()
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
-                    address4 = self._read_value()
+                    address4 = self._read_dlm()
                     if address4 is not FAILURE:
                         elements0.append(address4)
                         address5 = FAILURE
-                        chunk2 = None
+                        chunk1 = None
                         if self._offset < self._input_size:
-                            chunk2 = self._input[self._offset:self._offset + 2]
-                        if chunk2 == '"]':
-                            address5 = TreeNode(self._input[self._offset:self._offset + 2], self._offset)
-                            self._offset = self._offset + 2
+                            chunk1 = self._input[self._offset:self._offset + 1]
+                        if chunk1 == '"':
+                            address5 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+                            self._offset = self._offset + 1
                         else:
                             address5 = FAILURE
                             if self._offset > self._failure:
                                 self._failure = self._offset
                                 self._expected = []
                             if self._offset == self._failure:
-                                self._expected.append('"\\"]"')
+                                self._expected.append('"\\""')
                         if address5 is not FAILURE:
                             elements0.append(address5)
                             address6 = FAILURE
-                            address6 = self._read_dlm()
+                            address6 = self._read_value()
                             if address6 is not FAILURE:
                                 elements0.append(address6)
+                                address7 = FAILURE
+                                chunk2 = None
+                                if self._offset < self._input_size:
+                                    chunk2 = self._input[self._offset:self._offset + 1]
+                                if chunk2 == '"':
+                                    address7 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+                                    self._offset = self._offset + 1
+                                else:
+                                    address7 = FAILURE
+                                    if self._offset > self._failure:
+                                        self._failure = self._offset
+                                        self._expected = []
+                                    if self._offset == self._failure:
+                                        self._expected.append('"\\""')
+                                if address7 is not FAILURE:
+                                    elements0.append(address7)
+                                    address8 = FAILURE
+                                    address8 = self._read_dlm()
+                                    if address8 is not FAILURE:
+                                        elements0.append(address8)
+                                        address9 = FAILURE
+                                        chunk3 = None
+                                        if self._offset < self._input_size:
+                                            chunk3 = self._input[self._offset:self._offset + 1]
+                                        if chunk3 == ']':
+                                            address9 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+                                            self._offset = self._offset + 1
+                                        else:
+                                            address9 = FAILURE
+                                            if self._offset > self._failure:
+                                                self._failure = self._offset
+                                                self._expected = []
+                                            if self._offset == self._failure:
+                                                self._expected.append('"]"')
+                                        if address9 is not FAILURE:
+                                            elements0.append(address9)
+                                            address10 = FAILURE
+                                            address10 = self._read_dlm()
+                                            if address10 is not FAILURE:
+                                                elements0.append(address10)
+                                            else:
+                                                elements0 = None
+                                                self._offset = index1
+                                        else:
+                                            elements0 = None
+                                            self._offset = index1
+                                    else:
+                                        elements0 = None
+                                        self._offset = index1
+                                else:
+                                    elements0 = None
+                                    self._offset = index1
                             else:
                                 elements0 = None
                                 self._offset = index1

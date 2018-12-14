@@ -21,7 +21,7 @@ def make_nodes(eles):
 
 class TestParserActions:
     def test_make_tag_pair(self):
-        tp = Actions().make_tag_pair('[Event "test"]', 0, 0, make_nodes(["[", "Event", " \"", "test", "]"]))
+        tp = Actions().make_tag_pair('[Event "test"]', 0, 0, make_nodes(["[", "", "Event", "", " \"", "test", "\"", "", "]"]))
         assert tp['Event'] == "test"
 
     def test_make_tag_pairs(self):

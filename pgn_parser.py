@@ -3,7 +3,7 @@ import re
 
 class Actions:
     def make_tag_pair(self, input, start, end, elements):
-        tp = {elements[1].text: elements[3].text}
+        tp = {elements[2].text: elements[5].text}
         return tp
 
     def make_tag_pairs(self, input, start, end, elements):

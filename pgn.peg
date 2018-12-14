@@ -2,7 +2,7 @@ grammar PGN
 
 game <- tag_pairs:tag_pairs [\n]? movetext:movetext score:score? %make_game
 tag_pairs <- tag_pair* %make_tag_pairs
-tag_pair <- "[" key " \"" value "\"]" dlm %make_tag_pair
+tag_pair <- "[" dlm key dlm "\"" value "\"" dlm "]" dlm %make_tag_pair
 key <- [A-Za-z0-9_]+
 value <- [^\"]*
 
@@ -22,4 +22,5 @@ check <- [+#]
 castle <- "O-O-O" / "O-O"
 comment <- "{" [^\}]* "}" %make_comment
 score <- "1-0" / "0-1" / "1/2-1/2" / "*"
+
 dlm <- [\s]?
