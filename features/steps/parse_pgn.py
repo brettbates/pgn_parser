@@ -57,3 +57,26 @@ def step_test_full_game_file(context, g):
     for l in diff:
         print(l)
     assert_that(len(list(diff)), equal_to(0))
+
+@then(u'we can access the comment and moves {sanw} {commw} {sanb} {commb}')
+def step_we_can_access_comments(context, sanw, commw, sanb, commb):
+    if commw == "NONE":
+        commw = ""
+    elif commw == "SPACE":
+        commw = " "
+    elif commw == "\\n":
+        commw = "\n"
+
+    if commb == "NONE":
+        commb = ""
+    elif commb == "SPACE":
+        commb = " "
+    elif commb == "\\n":
+        commb = "\n"
+
+    for i, san in enumerate(sanw.split(',')):
+        assert_that(context.pgn.movetext[i].white.san, equal_to(san))
+        assert_that(context.pgn.movetext[i].white.comment, equal_to(commw))
+        assert_that(context.pgn.movetext[i].black.san, equal_to(sanb.split(',')[i]))
+        assert_that(context.pgn.movetext[i].black.comment, equal_to(commb))
+

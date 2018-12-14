@@ -28,7 +28,6 @@ Feature: Parsing a pgn file
             | [Event "Let's Play!"]\n[Site "Chess.com"] [Date "2018.12.13"] | TEST_TP_3_RES |
 
 
-    @wip
     Scenario Outline: Parse a pgn containing only movetext
         Given a pgn file with only movetext <movetext>
          When we parse it
@@ -51,6 +50,20 @@ Feature: Parsing a pgn file
             | 9. Ncxd5 Nce5        | Ncxd5  | Nce5    |
             | 9. N3xd5 N6e5        | N3xd5  | N6e5    |
             | 9. Nc3xd5 Nc6e5      | Nc3xd5 | Nc6e5   |
+
+
+    Scenario Outline: Parse a comment
+        Given a pgn file with only movetext <movetext>
+         When we parse it
+         Then we can access the comment and moves <SANW> <COMMW> <SANB> <COMMB>
+
+        Examples: Movetext comment
+            | movetext                     | SANW   | COMMW | SANB | COMMB |
+            | 1. e4 {white} e5 {black}     | e4     | white | e5   | black |
+            | 1. e4 e5 {black}             | e4     | NONE  | e5   | black |
+            | 1. e4 {white} e5             | e4     | white | e5   | NONE  |
+            | 1. e4 { } e5                 | e4     | SPACE | e5   | NONE  |
+            | 1. e4 {\n} e5                | e4     | \n    | e5   | NONE  |
 
 
     Scenario Outline: Parse a full pgn file
