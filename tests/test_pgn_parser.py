@@ -5,6 +5,7 @@ from unittest.mock import MagicMock
 
 
 def make_move_node(text, move_number, white, wcomment, black, bcomment):
+    """Create a mock set of nodes that comprise a Game"""
     n = MagicMock(
         move_number = pgn.TreeNode(move_number, 0),
         white = pgn.TreeNode(white, 0),
@@ -14,12 +15,15 @@ def make_move_node(text, move_number, white, wcomment, black, bcomment):
     return n
 
 def make_nodes(eles):
+    """Create a list of TreeNode's for feeding to the make_ actions"""
     out = []
     for e in eles:
         out.append(pgn.TreeNode(e, 0))
     return out
 
 class TestParserActions:
+    """Testing the Actions class as an actions object for use by the parser"""
+
     def test_make_tag_pair(self):
         tp = Actions().make_tag_pair('[Event "test"]', 0, 0, make_nodes(["[", "", "Event", "", " \"", "test", "\"", "", "]"]))
         assert tp['Event'] == "test"
@@ -62,13 +66,18 @@ class TestParserActions:
         assert g.score.result == "1-0"
 
 class TestMove:
+    """Test the Move class"""
+
     def test_move_no_to_i(self):
+        """Test converting a string move number like 1. into the int 1"""
         f = Move("1.","","","","").move_no_to_i
         assert f("1.") == 1
         assert f("2.") == 2
         assert f("300.") == 300
 
 class TestScore:
+    """Test the construction of a Score object"""
+
     def test_make_score(self):
         assert Score("0-1").white == "0"
         assert Score("0-1").black == "1"

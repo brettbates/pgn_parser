@@ -3,14 +3,14 @@ from pgn_parser import Actions
 import pytest
 import subprocess
 
-@pytest.fixture
-def compile_peg():
-    print(subprocess.call(["canopy", "pgn.peg", "--lang", "python"]))
-    return
 
-@pytest.mark.usefixtures("compile_peg")
 @pytest.mark.tp
 class TestParseTagPairs(object):
+    """Test the parsing of tag pairs
+
+    Each test is a tag_pair(s) that should be parsed and accessible as a dictionary
+    """
+
     def test_parse_tag_pair(self):
         tag_pair = '[Site "chess.com"]'
         tag_pairs = pgn.parse(tag_pair, actions=Actions()).tag_pairs
@@ -54,10 +54,12 @@ class TestParseTagPairs(object):
         assert tag_pairs['Event'] == "Let\'s Play!"
 
 
-
-@pytest.mark.usefixtures("compile_peg")
 @pytest.mark.mt
 class TestParseMovetext(object):
+    """Test the parsing of movetext
+
+    Each test is an input move or set of moves to be converted to an List of Move's
+    """
     def test_parse_movetext_simple(self):
         moves = '1. e4 e5'
         movetext = pgn.parse(moves, actions=Actions()).movetext[0]
@@ -178,21 +180,21 @@ class TestParseMovetext(object):
         assert movetext[1].white.comment == "comment 2."
         assert movetext[1].black.san == "d5"
 
-@pytest.mark.usefixtures("compile_peg")
-class TestParse:
-    @pytest.mark.score
-    def test_parse_score(self):
-        moves = "[Site \"help\"]\n1. e4 e5 1-0"
-        parsed = pgn.parse(moves, actions=Actions())
-        assert parsed.score.result == "1-0"
 
-@pytest.mark.usefixtures("compile_peg")
 class TestGame:
-    @pytest.mark.score
+    """Test the parsing of an entire game
+
+    Given a full game, product a valid Game object representing the input
+    """
     def test_parse_game(self):
         moves = "[Site \"help\"]\n1. e4 e5 1-0"
         parsed = pgn.parse(moves, actions=Actions())
         assert parsed.tag_pairs['Site'] == "help"
         assert parsed.movetext[0].white.san == "e4"
         assert parsed.movetext[0].black.san == "e5"
+        assert parsed.score.result == "1-0"
+
+    def test_parse_score(self):
+        moves = "[Site \"help\"]\n1. e4 e5 1-0"
+        parsed = pgn.parse(moves, actions=Actions())
         assert parsed.score.result == "1-0"
