@@ -66,13 +66,20 @@ class TestParseMovetext(object):
         assert movetext.white.san == "a8=Q"
         assert movetext.black.san == "axb8=R"
 
-    @pytest.mark.wip
     def test_parse_san_check(self):
         moves = '9. a8+ axb8=R#'
         movetext = pgn.parse(moves, actions=Actions()).movetext[0]
         assert movetext.move_number == 9
         assert movetext.white.san == "a8+"
         assert movetext.black.san == "axb8=R#"
+
+    @pytest.mark.wip
+    def test_parse_san_castle(self):
+        moves = '9. O-O O-O-O'
+        movetext = pgn.parse(moves, actions=Actions()).movetext[0]
+        assert movetext.move_number == 9
+        assert movetext.white.san == "O-O"
+        assert movetext.black.san == "O-O-O"
 
     def test_parse_movetext_simple_BN(self):
         moves = '2. Bb5 Nc6'

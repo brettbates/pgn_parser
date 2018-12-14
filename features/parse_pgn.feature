@@ -39,6 +39,7 @@ Feature: Parsing a pgn file
             | 12. exd5 cxd5        | exd5   | cxd5    |
             | 9. a8=Q axb8=R       | a8=Q   | axb8=R  |
             | 9. a8+ axb8=R#       | a8+    | axb8=R# |
+            | 9. O-O O-O-O         | O-O    | O-O-O   |
 
 
     Scenario Outline: Parse a full pgn file
