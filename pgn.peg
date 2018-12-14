@@ -9,8 +9,10 @@ value <- [^\"]*
 movetext <- move* %make_movetext
 move <- move_number dlm white:san dlm wcomment:comment? dlm black:san dlm bcomment:comment? dlm
 move_number <- [0-9]+ "." 
-san <- (square / piece square / piece takes square / file takes square / castle) promotes? check?
+san <- (square / san_psq / file takes square / castle) promotes? check?
+san_psq <- piece square takes? square / piece takes? square / piece file takes? square / piece rank takes? square 
 piece <- [KQRNBP] 
+disam <- square / file / rank 
 takes <- "x"
 square <- file rank
 file <- [a-h]

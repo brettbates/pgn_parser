@@ -40,6 +40,9 @@ Feature: Parsing a pgn file
             | 9. a8=Q axb8=R       | a8=Q   | axb8=R  |
             | 9. a8+ axb8=R#       | a8+    | axb8=R# |
             | 9. O-O O-O-O         | O-O    | O-O-O   |
+            | 9. Ncxd5 Nce5        | Ncxd5  | Nce5    |
+            | 9. N3xd5 N6e5        | N3xd5  | N6e5    |
+            | 9. Nc3xd5 Nc6e5      | Nc3xd5 | Nc6e5   |
 
 
     Scenario Outline: Parse a full pgn file
