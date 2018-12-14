@@ -45,10 +45,10 @@ class Actions:
     def make_game(self, input, start, end, elements):
         e = elements
 
-        if type(e[3]) == Score:
-            s = e[3]
+        if re.match("(1-0|0-1|1/2-1/2|\*)", e[3].text):
+            s = Score(e[3].text)
         else:
-            s = Score('*', '*')
+            s = Score('*')
         g = Game(e[0], e[2], s)
         return g
 
@@ -86,7 +86,11 @@ class Move:
 
 
 class Score:
-    def __init__(self, w, b):
+    def __init__(self, score):
+        if score == "*":
+            w, b = "*", "*"
+        else:
+            w, b = score.split('-')
         self.white = w
         self.black = b
         self.result = self.get_result()

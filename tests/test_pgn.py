@@ -9,6 +9,7 @@ def compile_peg():
     return
 
 @pytest.mark.usefixtures("compile_peg")
+@pytest.mark.tp
 class TestParseTagPairs(object):
     def test_parse_tag_pair(self):
         tag_pair = '[Site "chess.com"]'
@@ -33,7 +34,9 @@ class TestParseTagPairs(object):
         assert tag_pairs['Event'] == "Let\'s Play!"
 
 
+
 @pytest.mark.usefixtures("compile_peg")
+@pytest.mark.mt
 class TestParseMovetext(object):
     def test_parse_movetext_simple(self):
         moves = '1. e4 e5'
@@ -41,6 +44,20 @@ class TestParseMovetext(object):
         assert movetext.move_number == 1
         assert movetext.white.san == "e4"
         assert movetext.black.san == "e5"
+
+    def test_parse_san_piece_takes(self):
+        moves = '1. Nxd5 Bxd5'
+        movetext = pgn.parse(moves, actions=Actions()).movetext[0]
+        assert movetext.move_number == 1
+        assert movetext.white.san == "Nxd5"
+        assert movetext.black.san == "Bxd5"
+
+    def test_parse_san_pawn_takes(self):
+        moves = '1. exd5 cxd5'
+        movetext = pgn.parse(moves, actions=Actions()).movetext[0]
+        assert movetext.move_number == 1
+        assert movetext.white.san == "exd5"
+        assert movetext.black.san == "cxd5"
 
     def test_parse_movetext_simple_BN(self):
         moves = '2. Bb5 Nc6'

@@ -22,6 +22,7 @@ Feature: Parsing a pgn file
             | [Event "Let's Play!"]\n[Site "Chess.com"] [Date "2018.12.13"] | TEST_TP_3_RES |
 
 
+    @wip
     Scenario Outline: Parse a pgn containing only movetext
         Given a pgn file with only movetext <movetext>
          When we parse it
@@ -34,6 +35,8 @@ Feature: Parsing a pgn file
             | 1. e4 e5\n2. Nf3 Nc6 | e4,Nf3 | e5,Nc6 | 
             | 1. e4 e5\n 2. d4 d5  | e4,d4  | e5,d5  |
             | 1. e4 e5 2.\nd4 d5   | e4,d4  | e5,d5  |
+            | 12. Nxd5 Bxd5        | Nxd5   | Bxd5   |
+            | 12. exd5 cxd5        | exd5   | cxd5   |
 
 
     Scenario Outline: Parse a full pgn file
