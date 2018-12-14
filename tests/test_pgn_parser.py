@@ -47,7 +47,6 @@ class TestParserActions:
         assert mt[0].black.san == "e5"
         assert mt[0].black.comment == "black comment"
 
-    @pytest.mark.wip
     def test_make_game(self):
         input = '[Site "bmb.io]\n1. e4 e5 {white wins} 1-0'
         g = Actions().make_game(input, 0, 0,
