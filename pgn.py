@@ -87,8 +87,9 @@ class Grammar(object):
     REGEX_6 = re.compile('^[a-h]')
     REGEX_7 = re.compile('^[1-8]')
     REGEX_8 = re.compile('^[KQRNB]')
-    REGEX_9 = re.compile('^[^\\}]')
-    REGEX_10 = re.compile('^[\\s]')
+    REGEX_9 = re.compile('^[+#]')
+    REGEX_10 = re.compile('^[^\\}]')
+    REGEX_11 = re.compile('^[\\s]')
 
     def _read_game(self):
         address0, index0 = FAILURE, self._offset
@@ -608,6 +609,17 @@ class Grammar(object):
                 self._offset = index6
             if address10 is not FAILURE:
                 elements0.append(address10)
+                address11 = FAILURE
+                index7 = self._offset
+                address11 = self._read_check()
+                if address11 is FAILURE:
+                    address11 = TreeNode(self._input[index7:index7], index7)
+                    self._offset = index7
+                if address11 is not FAILURE:
+                    elements0.append(address11)
+                else:
+                    elements0 = None
+                    self._offset = index1
             else:
                 elements0 = None
                 self._offset = index1
@@ -792,6 +804,28 @@ class Grammar(object):
         self._cache['promotes'][index0] = (address0, self._offset)
         return address0
 
+    def _read_check(self):
+        address0, index0 = FAILURE, self._offset
+        cached = self._cache['check'].get(index0)
+        if cached:
+            self._offset = cached[1]
+            return cached[0]
+        chunk0 = None
+        if self._offset < self._input_size:
+            chunk0 = self._input[self._offset:self._offset + 1]
+        if chunk0 is not None and Grammar.REGEX_9.search(chunk0):
+            address0 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+            self._offset = self._offset + 1
+        else:
+            address0 = FAILURE
+            if self._offset > self._failure:
+                self._failure = self._offset
+                self._expected = []
+            if self._offset == self._failure:
+                self._expected.append('[+#]')
+        self._cache['check'][index0] = (address0, self._offset)
+        return address0
+
     def _read_comment(self):
         address0, index0 = FAILURE, self._offset
         cached = self._cache['comment'].get(index0)
@@ -821,7 +855,7 @@ class Grammar(object):
                 chunk1 = None
                 if self._offset < self._input_size:
                     chunk1 = self._input[self._offset:self._offset + 1]
-                if chunk1 is not None and Grammar.REGEX_9.search(chunk1):
+                if chunk1 is not None and Grammar.REGEX_10.search(chunk1):
                     address3 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
                     self._offset = self._offset + 1
                 else:
@@ -954,7 +988,7 @@ class Grammar(object):
         chunk0 = None
         if self._offset < self._input_size:
             chunk0 = self._input[self._offset:self._offset + 1]
-        if chunk0 is not None and Grammar.REGEX_10.search(chunk0):
+        if chunk0 is not None and Grammar.REGEX_11.search(chunk0):
             address0 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
             self._offset = self._offset + 1
         else:

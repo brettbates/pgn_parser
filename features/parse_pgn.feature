@@ -29,15 +29,16 @@ Feature: Parsing a pgn file
          Then we can access the moves node containing an array of correct Move objects with SAN's <SANW> <SANB>
 
         Examples: Movetext
-            | movetext             | SANW   | SANB   |
-            | 1. e4 e5             | e4     | e5     |
-            | 1. e4 e5\n2. d4 d5   | e4,d4  | e5,d5  | 
-            | 1. e4 e5\n2. Nf3 Nc6 | e4,Nf3 | e5,Nc6 | 
-            | 1. e4 e5\n 2. d4 d5  | e4,d4  | e5,d5  |
-            | 1. e4 e5 2.\nd4 d5   | e4,d4  | e5,d5  |
-            | 12. Nxd5 Bxd5        | Nxd5   | Bxd5   |
-            | 12. exd5 cxd5        | exd5   | cxd5   |
-            | 9. a8=Q axb8=R       | a8=Q   | axb8=R |
+            | movetext             | SANW   | SANB    |
+            | 1. e4 e5             | e4     | e5      |
+            | 1. e4 e5\n2. d4 d5   | e4,d4  | e5,d5   | 
+            | 1. e4 e5\n2. Nf3 Nc6 | e4,Nf3 | e5,Nc6  | 
+            | 1. e4 e5\n 2. d4 d5  | e4,d4  | e5,d5   |
+            | 1. e4 e5 2.\nd4 d5   | e4,d4  | e5,d5   |
+            | 12. Nxd5 Bxd5        | Nxd5   | Bxd5    |
+            | 12. exd5 cxd5        | exd5   | cxd5    |
+            | 9. a8=Q axb8=R       | a8=Q   | axb8=R  |
+            | 9. a8+ axb8=R#       | a8+    | axb8=R# |
 
 
     Scenario Outline: Parse a full pgn file
