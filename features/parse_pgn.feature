@@ -85,5 +85,6 @@ Feature: Parsing a pgn file
          Then we should have a full Game that can be stringified to equal the file <g>
 
         Examples: PGNs
-            | f      | g       |
-            | f1.pgn | f1.epgn |
+            | f          | g           |
+            | f1.pgn     | f1.epgn     |
+            | cbase1.pgn | cbase1.epgn |

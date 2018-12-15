@@ -133,8 +133,6 @@ class TestParseMovetext(object):
     def test_parse_movetexts_simple_space(self):
         moves = '1. e4 e5 2. d4 d5'
         movetext = pgn.parse(moves, actions=Actions()).movetext
-        first = movetext[0]
-        second = movetext[1]
         assert movetext[0].move_number == 1
         assert movetext[0].white.san == "e4"
         assert movetext[0].black.san == "e5"
@@ -145,8 +143,6 @@ class TestParseMovetext(object):
     def test_parse_movetexts_simple_newline(self):
         moves = '1. e4 e5\n2. d4 d5'
         movetext = pgn.parse(moves, actions=Actions()).movetext
-        movetext[0] = movetext[0]
-        movetext[1] = movetext[1]
         assert movetext[0].move_number == 1
         assert movetext[0].white.san == "e4"
         assert movetext[0].black.san == "e5"
@@ -157,8 +153,6 @@ class TestParseMovetext(object):
     def test_parse_movetexts_simple_newline_mid(self):
         moves = '1. e4 e5 2. d4\nd5'
         movetext = pgn.parse(moves, actions=Actions()).movetext
-        movetext[0] = movetext[0]
-        movetext[1] = movetext[1]
         assert movetext[0].move_number == 1
         assert movetext[0].white.san == "e4"
         assert movetext[0].black.san == "e5"
@@ -169,8 +163,6 @@ class TestParseMovetext(object):
     def test_parse_movetexts_comment(self):
         moves = '1. e4 e5 {comment 1...} 2. d4 {comment 2.} d5'
         movetext = pgn.parse(moves, actions=Actions()).movetext
-        movetext[0] = movetext[0]
-        movetext[1] = movetext[1]
         assert movetext[0].move_number == 1
         assert movetext[0].white.san == "e4"
         assert movetext[0].black.san == "e5"
@@ -180,6 +172,40 @@ class TestParseMovetext(object):
         assert movetext[1].white.comment == "comment 2."
         assert movetext[1].black.san == "d5"
 
+    def test_parse_movetexts_nag_single(self):
+        moves = '1. e4 $0 e5 $139'
+        movetext = pgn.parse(moves, actions=Actions()).movetext
+        assert movetext[0].move_number == 1
+        assert movetext[0].white.san == "e4"
+        assert movetext[0].white.nags == ["$0"]
+        assert movetext[0].black.san == "e5"
+        assert movetext[0].black.nags == ["$139"]
+
+    def test_parse_movetexts_nag_multiple(self):
+        moves = '1. e4 $0 $19 e5 $19 $139 $0'
+        movetext = pgn.parse(moves, actions=Actions()).movetext
+        assert movetext[0].move_number == 1
+        assert movetext[0].white.san == "e4"
+        assert movetext[0].white.nags == ["$0", "$19"]
+        assert movetext[0].black.san == "e5"
+        assert movetext[0].black.nags == ["$19", "$139", "$0"]
+
+    @pytest.mark.wip
+    def test_parse_movetexts_nags(self):
+        moves = '1. e4 $0 e5 $1 $139 {comment 1...} 2. d4 $3 {comment 2.} d5 $19 $21 $139 $0'
+        movetext = pgn.parse(moves, actions=Actions()).movetext
+        assert movetext[0].move_number == 1
+        assert movetext[0].white.san == "e4"
+        assert movetext[0].white.nags == ["$0"]
+        assert movetext[0].black.san == "e5"
+        assert movetext[0].black.nags == ["$1", "$139"]
+        assert movetext[0].black.comment == "comment 1..."
+        assert movetext[1].move_number == 2
+        assert movetext[1].white.san == "d4"
+        assert movetext[1].white.nags == ["$3"]
+        assert movetext[1].white.comment == "comment 2."
+        assert movetext[1].black.san == "d5"
+        assert movetext[1].black.nags == ["$19", "$21", "$139", "$0"]
 
 class TestGame:
     """Test the parsing of an entire game

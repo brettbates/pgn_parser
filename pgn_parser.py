@@ -55,8 +55,10 @@ class Actions:
                 bcomment = ""
             mt.append(Move(e.move_number.text,
                            e.white.text,
+                           e.wnags.elements,
                            wcomment,
                            e.black.text,
+                           e.bnags.elements,
                            bcomment))
         return mt
 
@@ -107,10 +109,11 @@ class TagPairs(OrderedDict):
 class Ply:
     """A Ply is a half a move in a game, either white or blacks side of the move"""
 
-    def __init__(self, colour, san, comment):
+    def __init__(self, colour, san, nags=[],comment=""):
         """Inits the colour san and any comment of the ply"""
         self.colour = colour
         self.san = san
+        self.nags = self.nodes_to_nags(nags)
         self.comment = comment
 
     def __str__(self):
@@ -125,15 +128,22 @@ class Ply:
             out += " {" + self.comment + "}"
         return out
 
+    def nodes_to_nags(self, nags):
+        """Convert input TreeNode's into a list of string nags"""
+        out = []
+        for n in nags:
+            out.append(n.text.strip(' '))
+        return out
+
 
 class Move:
     """Representing a move, of 1 or 2 ply along with the move number"""
 
-    def __init__(self, move_number, white, wcomment, black, bcomment):
+    def __init__(self, move_number, white, wnags, wcomment, black, bnags, bcomment):
         """Inits the Move x with the white and or black Ply's"""
         self.move_number = self.move_no_to_i(move_number)
-        self.white = Ply("w", white, wcomment)
-        self.black = Ply("b", black, bcomment)
+        self.white = Ply("w", white, wnags, wcomment)
+        self.black = Ply("b", black, bnags, bcomment)
 
     def __str__(self):
         """Stringifies the Move to legal pgn move

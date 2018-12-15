@@ -1,0 +1,11 @@
+[Event "?"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "?"]
+[Black "?"]
+[Result "*"]
+[PlyCount "4"]
+
+1. e4 $1 e5 {[#]}
+2. d4 $3 $18 d5 {6000 black comment} *
