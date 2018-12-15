@@ -43,7 +43,7 @@ class Actions:
             A List of Move objects in order:
                 [Move("1.", "e4", "white comment", "e5", "black comment"), etc]
         """
-        mt = []
+        mt = Movetext()
         for e in elements:
             if type(e.wcomment) == str:
                 wcomment = e.wcomment
@@ -154,6 +154,25 @@ class Move:
         return no
 
 
+class Movetext(list):
+    def __str__(self):
+        """Stringifies movetext
+
+        Turns the list of Move's into a valid movetext section
+
+        Returns:
+            1. e4 {wc} e5 {bc} 2. d4 {wc2} d5 {bc2}
+        """
+        out = ""
+        for i, m in enumerate(self):
+            out += str(m)
+            if i + 1 != len(self):
+               out += "\n"
+        out += " "
+        return out
+
+
+
 class Score:
     """Representing the score of a game"""
 
@@ -196,22 +215,6 @@ class Game:
     def __str__(self):
         """Stringifies the Game to a valid pgn file"""
         out = str(self.tag_pairs)
-        out += self.str_movetext()
+        out += str(self.movetext)
         out += str(self.score)
-        return out
-
-    def str_movetext(self):
-        """Stringifies movetext
-
-        Turns the list of Move's into a valid movetext section
-
-        Returns:
-            1. e4 {wc} e5 {bc} 2. d4 {wc2} d5 {bc2}
-        """
-        out = ""
-        for i, m in enumerate(self.movetext):
-            out += str(m)
-            if i + 1 != len(self.movetext):
-               out += "\n"
-        out += " "
         return out
