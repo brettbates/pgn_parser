@@ -40,7 +40,6 @@ Feature: Parsing a pgn file
             | [Event "Let's Play!"]\n[Site "Chess.com"]\n[Custom "xyz"]\n[Custom2 "xyz2"]\n[Custom3 "xyz3"] | TEST_TP_5_RES_ORD |
 
 
-    @wip
     Scenario Outline: Parse a pgn containing only movetext
         Given a pgn file with only movetext <movetext>
          When we parse it
@@ -69,6 +68,18 @@ Feature: Parsing a pgn file
             | 1... e5 2. d4        | NONE,d4 | e5,NONE |
 
 
+    @wip
+    Scenario Outline: Parse movetext with variations
+        Given a pgn file with only movetext <movetext>
+         When we parse it
+         Then we can access the variations <vs>
+
+        Examples: variations
+            | movetext        | vs     |
+            | 1. e4 (1. d4)   | 1. d4  |
+            | 1...e5 (1...d5) | 1...d5 |
+
+
     Scenario Outline: Parse a comment
         Given a pgn file with only movetext <movetext>
          When we parse it
@@ -94,3 +105,4 @@ Feature: Parsing a pgn file
             | cc4.pgn    | cc4.epgn    |
             | cbnag.pgn  | cbnag.epgn  |
             | cbsply.pgn | cbsply.epgn |
+            | cbvar.pgn  | cbvar.epgn  |

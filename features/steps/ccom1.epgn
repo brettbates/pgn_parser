@@ -1,0 +1,71 @@
+[Event "Live Chess"]
+[Site "Chess.com"]
+[Date "2018.12.14"]
+[Round "?"]
+[White "bmbio"]
+[Black "Juan-fran"]
+[Result "1-0"]
+[TimeControl "2700+45"]
+[WhiteElo "1190"]
+[BlackElo "945"]
+[Termination "bmbio won by resignation"]
+[ECO ""]
+[CurrentPosition "r7/8/7p/p2kP1p1/3P2P1/2PK3P/8/R7 b - - 6 35"]
+
+1.d4 d5
+2.c4 Nf6
+3.Nc3 {D06: Queen's Gambit Declined: Marshall Defense, 3.Nc3 }
+3...c6
+4.cxd5 Nxd5
+5.e4 Nxc3
+6.bxc3 Nd7
+7.Bf4 { (+1.23 → +0.14) Inaccuracy. A better move was 7. Bd3. }
+  ( 7.Bd3 7...e5 8.Ne2 8...exd4 9.cxd4 9...Qa5+ 10.Bd2 10...Bb4 11.Bxb4 11...Qxb4+ )
+7...h6 { (+0.10 → +1.04) Inaccuracy. A better move was 7... e5. }
+  ( 7...e5 8.dxe5 )
+8.Bd3 { (+1.03 → -0.23) Mistake. The best move was 8. Nf3. }
+  ( 8.Nf3 8...g5 )
+8...g5 { (0.00 → +1.12) Inaccuracy. A better move was 8... e5. }
+  ( 8...e5 9.dxe5 )
+9.Bg3 Bg7
+10.Nf3 b5 { (+0.84 → +1.58) Inaccuracy. A better move was 10... e5. }
+  ( 10...e5 )
+11.O-O Nf6
+12.h3 Nh5
+13.Bh2 a5
+14.Ne5 Bxe5
+15.Bxe5 Nf6
+16.Bxf6 { (+3.08 → +1.83) Inaccuracy. A better move was 16. Qe2. }
+  ( 16.Qe2 16...Rg8 17.d5 17...Bd7 18.c4 18...g4 19.h4 19...g3 20.c5 20...gxf2+ )
+16...exf6
+17.a4 Ba6 { (+1.68 → +3.36) Inaccuracy. A better move was 17... b4. }
+  ( 17...b4 18.cxb4 18...Qxd4 19.b5 19...Bd7 20.Qf3 20...cxb5 21.Rfd1 21...Qe5 22.Bxb5 )
+18.axb5 Bxb5
+19.f4 Qe7 { (+1.89 → +3.38) Inaccuracy. A better move was 19... Kf8. }
+  ( 19...Kf8 20.Bxb5 20...cxb5 21.Qd3 21...b4 22.cxb4 22...axb4 23.Rxa8 23...Qxa8 24.fxg5 )
+20.e5 { (+3.75 → +2.62) Inaccuracy. A better move was 20. c4. }
+( 20.c4 )
+20...fxe5 { (+2.50 → +4.36) Inaccuracy. A better move was 20... Bxd3. }
+  ( 20...Bxd3 21.Qxd3 21...O-O 22.fxg5 22...fxe5 23.gxh6 23...Kh8 24.dxe5 24...Qxe5 25.Rf5 )
+21.fxe5 O-O 22.Qe2 { (+7.11 → +1.49) Blunder. The best move was 22. Rf6. }
+  ( 22.Rf6 22...Bxd3 23.Qxd3 23...Rad8 24.Rxh6 24...f5 25.Qf3 25...Qe8 26.Rxa5 26...Rd7 )
+22...Rfe8 { (+1.20 → +8.46) Blunder. The best move was 22... Bxd3. }
+  ( 22...Bxd3 23.Qxd3 23...f6 24.Qg6+ 24...Qg7 25.Qe4 25...fxe5 26.dxe5 26...Rxf1+ 27.Rxf1 )
+23.Bxb5 { (+8.71 → +3.16) Blunder. The best move was 23. c4. }
+  ( 23.c4 )
+23...cxb5
+24.Qxb5 Qc7
+25.Qd3 Qa7 { (+2.78 → +6.14) Mistake. The best move was 25... Re6. }
+  ( 25...Re6 26.c4 )
+26.Rf6 Re6
+27.Rxe6 fxe6
+28.Qg6+ Qg7
+29.Qxe6+ Kh7
+30.Qf5+ Qg6
+31.Qxg6+ { (+6.93 → +5.00) Inaccuracy. A better move was 31. Qd7+. }
+  ( 31.Qd7+ )
+31...Kxg6
+32.g4 Kf7
+33.Kf2 Ke6
+34.Ke3 Kd5
+35.Kd3 {black resigns} 1-0

@@ -34,14 +34,16 @@ class TreeNode3(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode3, self).__init__(text, offset, elements)
         self.move_number = elements[0]
-        self.dlm = elements[11]
+        self.dlm = elements[13]
         self.white = elements[2]
         self.san = elements[2]
         self.wnags = elements[4]
         self.wcomment = elements[5]
-        self.black = elements[7]
-        self.bnags = elements[9]
-        self.bcomment = elements[10]
+        self.wvar = elements[6]
+        self.black = elements[8]
+        self.bnags = elements[10]
+        self.bcomment = elements[11]
+        self.bvar = elements[12]
 
 
 class TreeNode4(TreeNode):
@@ -99,6 +101,13 @@ class TreeNode11(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode11, self).__init__(text, offset, elements)
         self.dlm = elements[2]
+
+
+class TreeNode12(TreeNode):
+    def __init__(self, text, offset, elements):
+        super(TreeNode12, self).__init__(text, offset, elements)
+        self.dlm = elements[1]
+        self.movetext = elements[2]
 
 
 class ParseError(SyntaxError):
@@ -473,41 +482,63 @@ class Grammar(object):
                             if address6 is not FAILURE:
                                 elements0.append(address6)
                                 address7 = FAILURE
-                                address7 = self._read_dlm()
+                                index4 = self._offset
+                                address7 = self._read_variation()
+                                if address7 is FAILURE:
+                                    address7 = TreeNode(self._input[index4:index4], index4)
+                                    self._offset = index4
                                 if address7 is not FAILURE:
                                     elements0.append(address7)
                                     address8 = FAILURE
-                                    index4 = self._offset
-                                    address8 = self._read_san()
-                                    if address8 is FAILURE:
-                                        address8 = TreeNode(self._input[index4:index4], index4)
-                                        self._offset = index4
+                                    address8 = self._read_dlm()
                                     if address8 is not FAILURE:
                                         elements0.append(address8)
                                         address9 = FAILURE
-                                        address9 = self._read_dlm()
+                                        index5 = self._offset
+                                        address9 = self._read_san()
+                                        if address9 is FAILURE:
+                                            address9 = TreeNode(self._input[index5:index5], index5)
+                                            self._offset = index5
                                         if address9 is not FAILURE:
                                             elements0.append(address9)
                                             address10 = FAILURE
-                                            index5 = self._offset
-                                            address10 = self._read_nags()
-                                            if address10 is FAILURE:
-                                                address10 = TreeNode(self._input[index5:index5], index5)
-                                                self._offset = index5
+                                            address10 = self._read_dlm()
                                             if address10 is not FAILURE:
                                                 elements0.append(address10)
                                                 address11 = FAILURE
                                                 index6 = self._offset
-                                                address11 = self._read_comment()
+                                                address11 = self._read_nags()
                                                 if address11 is FAILURE:
                                                     address11 = TreeNode(self._input[index6:index6], index6)
                                                     self._offset = index6
                                                 if address11 is not FAILURE:
                                                     elements0.append(address11)
                                                     address12 = FAILURE
-                                                    address12 = self._read_dlm()
+                                                    index7 = self._offset
+                                                    address12 = self._read_comment()
+                                                    if address12 is FAILURE:
+                                                        address12 = TreeNode(self._input[index7:index7], index7)
+                                                        self._offset = index7
                                                     if address12 is not FAILURE:
                                                         elements0.append(address12)
+                                                        address13 = FAILURE
+                                                        index8 = self._offset
+                                                        address13 = self._read_variation()
+                                                        if address13 is FAILURE:
+                                                            address13 = TreeNode(self._input[index8:index8], index8)
+                                                            self._offset = index8
+                                                        if address13 is not FAILURE:
+                                                            elements0.append(address13)
+                                                            address14 = FAILURE
+                                                            address14 = self._read_dlm()
+                                                            if address14 is not FAILURE:
+                                                                elements0.append(address14)
+                                                            else:
+                                                                elements0 = None
+                                                                self._offset = index1
+                                                        else:
+                                                            elements0 = None
+                                                            self._offset = index1
                                                     else:
                                                         elements0 = None
                                                         self._offset = index1
@@ -1313,6 +1344,73 @@ class Grammar(object):
             address0 = TreeNode11(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
         self._cache['nag'][index0] = (address0, self._offset)
+        return address0
+
+    def _read_variation(self):
+        address0, index0 = FAILURE, self._offset
+        cached = self._cache['variation'].get(index0)
+        if cached:
+            self._offset = cached[1]
+            return cached[0]
+        index1, elements0 = self._offset, []
+        address1 = FAILURE
+        chunk0 = None
+        if self._offset < self._input_size:
+            chunk0 = self._input[self._offset:self._offset + 1]
+        if chunk0 == '(':
+            address1 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+            self._offset = self._offset + 1
+        else:
+            address1 = FAILURE
+            if self._offset > self._failure:
+                self._failure = self._offset
+                self._expected = []
+            if self._offset == self._failure:
+                self._expected.append('"("')
+        if address1 is not FAILURE:
+            elements0.append(address1)
+            address2 = FAILURE
+            address2 = self._read_dlm()
+            if address2 is not FAILURE:
+                elements0.append(address2)
+                address3 = FAILURE
+                address3 = self._read_movetext()
+                if address3 is not FAILURE:
+                    elements0.append(address3)
+                    address4 = FAILURE
+                    chunk1 = None
+                    if self._offset < self._input_size:
+                        chunk1 = self._input[self._offset:self._offset + 1]
+                    if chunk1 == ')':
+                        address4 = TreeNode(self._input[self._offset:self._offset + 1], self._offset)
+                        self._offset = self._offset + 1
+                    else:
+                        address4 = FAILURE
+                        if self._offset > self._failure:
+                            self._failure = self._offset
+                            self._expected = []
+                        if self._offset == self._failure:
+                            self._expected.append('")"')
+                    if address4 is not FAILURE:
+                        elements0.append(address4)
+                    else:
+                        elements0 = None
+                        self._offset = index1
+                else:
+                    elements0 = None
+                    self._offset = index1
+            else:
+                elements0 = None
+                self._offset = index1
+        else:
+            elements0 = None
+            self._offset = index1
+        if elements0 is None:
+            address0 = FAILURE
+        else:
+            address0 = self._actions.make_variation(self._input, index1, self._offset, elements0)
+            self._offset = self._offset
+        self._cache['variation'][index0] = (address0, self._offset)
         return address0
 
     def _read_score(self):

@@ -57,10 +57,17 @@ class Actions:
                            e.white.text,
                            e.wnags.elements,
                            wcomment,
+                           [e.wvar],
                            e.black.text,
                            e.bnags.elements,
-                           bcomment))
+                           bcomment,
+                           [e.bvar]))
         return mt
+
+    def make_variation(self, input, start, end, elements):
+        """Return just the movetext of a variation"""
+        return elements[2]
+
 
     def make_game(self, input, start, end, elements):
         """Construct the representation of an entire game
@@ -110,12 +117,13 @@ class TagPairs(OrderedDict):
 class Ply:
     """A Ply is a half a move in a game, either white or blacks side of the move"""
 
-    def __init__(self, colour, san, nags=[],comment=""):
+    def __init__(self, colour, san, nags=[], comment="", variations=[]):
         """Inits the colour san and any comment of the ply"""
         self.colour = colour
         self.san = san
         self.nags = self.nodes_to_nags(nags)
         self.comment = comment
+        self.variations = variations
 
     def __str__(self):
         """Stringifies to a single pgn ply
@@ -140,12 +148,12 @@ class Ply:
 class Move:
     """Representing a move, of 1 or 2 ply along with the move number"""
 
-    def __init__(self, move_number, white, wnags, wcomment, black, bnags, bcomment):
+    def __init__(self, move_number, white, wnags, wcomment, wvars, black, bnags, bcomment, bvars):
         """Inits the Move x with the white and or black Ply's"""
         self.move_number = self.move_no_to_i(move_number)
         white = "" if white == ".." else white
-        self.white = Ply("w", white, wnags, wcomment)
-        self.black = Ply("b", black, bnags, bcomment)
+        self.white = Ply("w", white, wnags, wcomment, wvars)
+        self.black = Ply("b", black, bnags, bcomment, bvars)
 
     def __str__(self):
         """Stringifies the Move to legal pgn move

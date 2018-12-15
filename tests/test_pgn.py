@@ -227,7 +227,6 @@ class TestParseMovetext(object):
         assert movetext[1].black.san == "d5"
         assert movetext[1].black.nags == ["$19", "$21", "$139", "$0"]
 
-@pytest.mark.wip
 class TestGame:
     """Test the parsing of an entire game
 
@@ -240,6 +239,30 @@ class TestGame:
         assert parsed.movetext[0].white.san == "e4"
         assert parsed.movetext[0].black.san == "e5"
         assert parsed.score.result == "1-0"
+
+    def test_parse_game_variations(self):
+        moves = "[Site \"help\"]\n1. e4 (1. d4 d5) e5 1-0"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.movetext[0].white.variations[0][0].white.san == "d4"
+        assert parsed.movetext[0].white.variations[0][0].black.san == "d5"
+
+    def test_parse_game_variations_multi(self):
+        moves = "[Site \"help\"]\n1. e4 (1. d4 d5 2. c4 c5) e5 1-0"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.movetext[0].white.variations[0][0].white.san == "d4"
+        assert parsed.movetext[0].white.variations[0][1].black.san == "c5"
+
+    def test_parse_game_variations_black(self):
+        moves = "[Site \"help\"]\n1. e4 e5 (1...d5) 1-0"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.movetext[0].black.variations[0][0].black.san == "d5"
+
+    def test_parse_game_variations_multi_black(self):
+        moves = "[Site \"help\"]\n1. e4 e5 (1...d5 2. c4 c5) 1-0"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.movetext[0].black.variations[0][0].white.san == ""
+        assert parsed.movetext[0].black.variations[0][0].black.san == "d5"
+        assert parsed.movetext[0].black.variations[0][1].black.san == "c5"
 
     def test_parse_score(self):
         moves = "[Site \"help\"]\n1. e4 e5 1-0"

@@ -83,7 +83,7 @@ class TestParserActions:
                                      [{'Site': 'bmb.io'},
                                       pgn.TreeNode('\n', 0),
                                       "",
-                                      [Move("1.", "e4", "", "", "e5", "", "white wins")],
+                                      [Move("1.", "e4", "", "", [], "e5", "", "white wins", [])],
                                       pgn.TreeNode('1-0', 0)])
         assert g.tag_pairs['Site'] == "bmb.io"
         assert g.movetext[0].move_number == 1
@@ -92,14 +92,27 @@ class TestParserActions:
         assert g.movetext[0].black.comment == "white wins"
         assert g.score.result == "1-0"
 
-    @pytest.mark.wip
+    def test_make_game_variations(self):
+        input = '[Site "bmb.io]\n1. e4 (1. d4) e5 {white wins} 1-0'
+        g = Actions().make_game(input, 0, 0,
+                                     [{'Site': 'bmb.io'},
+                                      pgn.TreeNode('\n', 0),
+                                      "",
+                                      [Move("1.", "e4", "", "",
+                                            [[Move("1.", "d4", "", "", "", "", "", "", "")]],
+                                            "e5", "", "white wins", [])],
+                                      pgn.TreeNode('1-0', 0)])
+        assert g.tag_pairs['Site'] == "bmb.io"
+        assert g.movetext[0].white.variations[0][0].move_number == 1
+        assert g.movetext[0].white.variations[0][0].white.san == "d4"
+
     def test_make_game_gcomment(self):
         input = '[Site "bmb.io]\n{game comment} 1. e4 e5 {white wins} 1-0'
         g = Actions().make_game(input, 0, 0,
                                      [{'Site': 'bmb.io'},
                                       pgn.TreeNode('\n', 0),
                                       "game comment",
-                                      [Move("1.", "e4", "", "", "e5", "", "white wins")],
+                                      [Move("1.", "e4", "", "", [], "e5", "", "white wins", [])],
                                       pgn.TreeNode('1-0', 0)])
         assert g.tag_pairs['Site'] == "bmb.io"
         assert g.comment == "game comment"
@@ -114,7 +127,7 @@ class TestMove:
 
     def test_move_no_to_i(self):
         """Test converting a string move number like 1. into the int 1"""
-        f = Move("1.","","","","", "", "").move_no_to_i
+        f = Move("1.","","","","","","","","").move_no_to_i
         assert f("1.") == 1
         assert f("2.") == 2
         assert f("300.") == 300

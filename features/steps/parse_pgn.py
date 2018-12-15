@@ -91,3 +91,16 @@ def step_we_can_access_comments(context, sanw, commw, sanb, commb):
         assert_that(context.pgn.movetext[i].black.san, equal_to(sanb.split(',')[i]))
         assert_that(context.pgn.movetext[i].black.comment, equal_to(commb))
 
+# @then(u'we can access the variations {vs}')
+# def step_we_can_access_variations(context, vs):
+#     assert_that(str(context.pgn.movetext[0].black.variations[0]), equal_to(vs))
+
+@then(u'we can access the variations 1. d4')
+def step_var_1d4(context):
+     assert_that(str(context.pgn.movetext[0].white.variations[0][0].white.san), equal_to("d4"))
+
+
+@then(u'we can access the variations 1...d5')
+def step_var_1bd5(context):
+     assert_that(str(context.pgn.movetext[0].black.variations[0][0].black.san), equal_to("d5"))
+

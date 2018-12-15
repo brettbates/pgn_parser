@@ -1,0 +1,15 @@
+[Event "?"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "Enter New Game"]
+[Black "?"]
+[Result "*"]
+[PlyCount "5"]
+
+1. e4 e5
+2. d4 exd4
+   (2... d5)
+   ( 2... f5 )
+   (2... a5)
+3. Qxd4 *
