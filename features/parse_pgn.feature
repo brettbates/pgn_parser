@@ -91,5 +91,6 @@ Feature: Parsing a pgn file
         Examples: PGNs
             | f          | g           |
             | cc1.pgn    | cc1.epgn    |
+            | cc4.pgn    | cc4.epgn    |
             | cbnag.pgn  | cbnag.epgn  |
             | cbsply.pgn | cbsply.epgn |

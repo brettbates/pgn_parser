@@ -82,9 +82,27 @@ class TestParserActions:
         g = Actions().make_game(input, 0, 0,
                                      [{'Site': 'bmb.io'},
                                       pgn.TreeNode('\n', 0),
+                                      "",
                                       [Move("1.", "e4", "", "", "e5", "", "white wins")],
                                       pgn.TreeNode('1-0', 0)])
         assert g.tag_pairs['Site'] == "bmb.io"
+        assert g.movetext[0].move_number == 1
+        assert g.movetext[0].white.san == "e4"
+        assert g.movetext[0].black.san == "e5"
+        assert g.movetext[0].black.comment == "white wins"
+        assert g.score.result == "1-0"
+
+    @pytest.mark.wip
+    def test_make_game_gcomment(self):
+        input = '[Site "bmb.io]\n{game comment} 1. e4 e5 {white wins} 1-0'
+        g = Actions().make_game(input, 0, 0,
+                                     [{'Site': 'bmb.io'},
+                                      pgn.TreeNode('\n', 0),
+                                      "game comment",
+                                      [Move("1.", "e4", "", "", "e5", "", "white wins")],
+                                      pgn.TreeNode('1-0', 0)])
+        assert g.tag_pairs['Site'] == "bmb.io"
+        assert g.comment == "game comment"
         assert g.movetext[0].move_number == 1
         assert g.movetext[0].white.san == "e4"
         assert g.movetext[0].black.san == "e5"
@@ -123,4 +141,3 @@ class TestScore:
         assert Score("1/2-1/2").black == "1/2"
         assert Score("1/2-1/2").result == "1/2-1/2"
         assert Score("*").result == "*"
-

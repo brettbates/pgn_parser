@@ -68,19 +68,20 @@ class Actions:
         Args:
             elements = e
             e[0]: Tag Pairs
-            e[2]: Movetext
-            e[3]: Score
+            e[2]: Game Comment
+            e[3]: Movetext
+            e[4]: Score
 
         Returns:
            A Game object, representing a fully parsed pgn file
         """
         e = elements
 
-        if re.match("(1-0|0-1|1/2-1/2|\*)", e[3].text):
-            s = Score(e[3].text)
+        if re.match("(1-0|0-1|1/2-1/2|\*)", e[4].text):
+            s = Score(e[4].text)
         else:
             s = Score('*')
-        g = Game(e[0], e[2], s)
+        g = Game(e[0], e[2], e[3], s)
         return g
 
 
@@ -217,9 +218,10 @@ class Game:
         score: The score of the game
     """
 
-    def __init__(self, tag_pairs, movetext, score):
+    def __init__(self, tag_pairs, gcomment, movetext, score):
         """Initialises the Game given the constituent tag_pairs, movetext and score"""
         self.tag_pairs = tag_pairs
+        self.comment = gcomment
         self.movetext = movetext
         self.score = score
 

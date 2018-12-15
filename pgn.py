@@ -17,8 +17,9 @@ class TreeNode1(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode1, self).__init__(text, offset, elements)
         self.tag_pairs = elements[0]
-        self.movetext = elements[2]
-        self.score = elements[3]
+        self.gcomment = elements[2]
+        self.movetext = elements[3]
+        self.score = elements[4]
 
 
 class TreeNode2(TreeNode):
@@ -91,6 +92,12 @@ class TreeNode9(TreeNode):
 class TreeNode10(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode10, self).__init__(text, offset, elements)
+        self.dlm = elements[3]
+
+
+class TreeNode11(TreeNode):
+    def __init__(self, text, offset, elements):
+        super(TreeNode11, self).__init__(text, offset, elements)
         self.dlm = elements[2]
 
 
@@ -147,17 +154,28 @@ class Grammar(object):
             if address2 is not FAILURE:
                 elements0.append(address2)
                 address3 = FAILURE
-                address3 = self._read_movetext()
+                index3 = self._offset
+                address3 = self._read_comment()
+                if address3 is FAILURE:
+                    address3 = TreeNode(self._input[index3:index3], index3)
+                    self._offset = index3
                 if address3 is not FAILURE:
                     elements0.append(address3)
                     address4 = FAILURE
-                    index3 = self._offset
-                    address4 = self._read_score()
-                    if address4 is FAILURE:
-                        address4 = TreeNode(self._input[index3:index3], index3)
-                        self._offset = index3
+                    address4 = self._read_movetext()
                     if address4 is not FAILURE:
                         elements0.append(address4)
+                        address5 = FAILURE
+                        index4 = self._offset
+                        address5 = self._read_score()
+                        if address5 is FAILURE:
+                            address5 = TreeNode(self._input[index4:index4], index4)
+                            self._offset = index4
+                        if address5 is not FAILURE:
+                            elements0.append(address5)
+                        else:
+                            elements0 = None
+                            self._offset = index1
                     else:
                         elements0 = None
                         self._offset = index1
@@ -1161,6 +1179,13 @@ class Grammar(object):
                         self._expected.append('"}"')
                 if address4 is not FAILURE:
                     elements0.append(address4)
+                    address5 = FAILURE
+                    address5 = self._read_dlm()
+                    if address5 is not FAILURE:
+                        elements0.append(address5)
+                    else:
+                        elements0 = None
+                        self._offset = index1
                 else:
                     elements0 = None
                     self._offset = index1
@@ -1285,7 +1310,7 @@ class Grammar(object):
         if elements0 is None:
             address0 = FAILURE
         else:
-            address0 = TreeNode10(self._input[index1:self._offset], index1, elements0)
+            address0 = TreeNode11(self._input[index1:self._offset], index1, elements0)
             self._offset = self._offset
         self._cache['nag'][index0] = (address0, self._offset)
         return address0
