@@ -57,13 +57,13 @@ def step_we_can_access_moves(context, sanw, sanb):
 
 @given(u'the pgn file {f}')
 def step_a_pgn_file(context, f):
-    path = "{}/features/steps/{}".format(os.getcwd(),f)
+    path = "{}/features/steps/test_data/{}".format(os.getcwd(),f)
     context.pgn_str = open(path).read()
 
 
 @then(u'we should have a full Game that can be stringified to equal the file {g}')
 def step_test_full_game_file(context, g):
-    correct = open('./features/steps/'+g).read()
+    correct = open('./features/steps/test_data/'+g).read()
     diff = difflib.ndiff(correct.splitlines(1), str(context.pgn).splitlines(1))
     for l in diff:
         print(l)
