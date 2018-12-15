@@ -53,6 +53,14 @@ def step_we_can_access_moves(context, sanw, sanb):
         assert_that(context.pgn.movetext[i].white.san, equal_to(san))
         assert_that(context.pgn.movetext[i].black.san, equal_to(sanb.split(',')[i]))
 
+@then(u'we can access the moves node containing an array of correct Move objects with 1-3 SAN\'s e4 NONE NONE')
+def step_impl(context):
+    for i, san in enumerate(sanw.split(',')):
+        sw = san if san != "NONE" else ""
+        sb = san if sanb.split(',')[i] != "NONE" else ""
+        assert_that(context.pgn.movetext[i].white.san, equal_to(sw))
+        assert_that(context.pgn.movetext[i].black.san, equal_to(sb))
+
 @given(u'the pgn file {f}')
 def step_a_pgn_file(context, f):
     path = "{}/features/steps/{}".format(os.getcwd(),f)
