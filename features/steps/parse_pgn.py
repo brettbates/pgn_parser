@@ -104,3 +104,7 @@ def step_var_1d4(context):
 def step_var_1bd5(context):
      assert_that(str(context.pgn.movetext[0].black.variations[0][0].black.san), equal_to("d5"))
 
+@then(u'we can access the variations 1. d4 d5 2. c4 Nf6')
+def step_impl(context):
+     assert_that(str(context.pgn.movetext[0].white.variations[0][1].white.san), equal_to("c4"))
+     assert_that(str(context.pgn.movetext[0].white.variations[0][1].black.san), equal_to("Nf6"))

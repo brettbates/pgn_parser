@@ -75,9 +75,10 @@ Feature: Parsing a pgn file
          Then we can access the variations <vs>
 
         Examples: variations
-            | movetext        | vs     |
-            | 1. e4 (1. d4)   | 1. d4  |
-            | 1...e5 (1...d5) | 1...d5 |
+            | movetext                   | vs                 |
+            | 1. e4 (1. d4)              | 1. d4              |
+            | 1...e5 (1...d5)            | 1...d5             |
+            | 1. e4 (1. d4 d5 2. c4 Nf6) | 1. d4 d5 2. c4 Nf6 |
 
 
     Scenario Outline: Parse a comment
