@@ -13,11 +13,11 @@ value <- [^\"]*
 
 # Movetext is one or more moves, terminated by a score, like 1. "e4 e5 0-1"
 movetext <- move* %make_movetext
-move <- move_number dlm white:san dlm wnags:nags? wcomment:comment? dlm black:san dlm bnags:nags? bcomment:comment? dlm
+move <- move_number dlm white:san dlm wnags:nags? wcomment:comment? dlm black:san? dlm bnags:nags? bcomment:comment? dlm
 move_number <- [0-9]+ "." 
 
 # A SAN is a standard algebraic notation representation of a single players move, like e4
-san <- (square / san_psq / file takes square / castle) promotes? check?
+san <- (square / san_psq / file takes square / castle / blacks_move) promotes? check?
 san_psq <- piece square takes? square / piece takes? square / piece file takes? square / piece rank takes? square 
 piece <- [KQRNBP] 
 disam <- square / file / rank 
@@ -29,6 +29,9 @@ promotes <- "=" [KQRNB]
 check <- [+#]
 castle <- "O-O-O" / "O-O"
 comment <- "{" [^\}]* "}" %make_comment
+
+# for when it is 1...
+blacks_move <- ".."
 
 # A NAG is a numeric annotation glyph, representing anontations on a move such as !! ($3)
 nags <- nag+

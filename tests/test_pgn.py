@@ -67,6 +67,27 @@ class TestParseMovetext(object):
         assert movetext.white.san == "e4"
         assert movetext.black.san == "e5"
 
+    def test_parse_movetext_single_ply(self):
+        moves = '1. e4'
+        movetext = pgn.parse(moves, actions=Actions()).movetext[0]
+        assert movetext.move_number == 1
+        assert movetext.white.san == "e4"
+        assert movetext.black.san == ""
+
+    def test_parse_movetext_single_ply_black(self):
+        moves = '1...e5'
+        movetext = pgn.parse(moves, actions=Actions()).movetext[0]
+        assert movetext.move_number == 1
+        assert movetext.white.san == ""
+        assert movetext.black.san == "e5"
+
+    def test_parse_movetext_single_ply_blacksp(self):
+        moves = '1... e5'
+        movetext = pgn.parse(moves, actions=Actions()).movetext[0]
+        assert movetext.move_number == 1
+        assert movetext.white.san == ""
+        assert movetext.black.san == "e5"
+
     def test_parse_san_piece_takes(self):
         moves = '1. Nxd5 Bxd5'
         movetext = pgn.parse(moves, actions=Actions()).movetext[0]
@@ -190,7 +211,6 @@ class TestParseMovetext(object):
         assert movetext[0].black.san == "e5"
         assert movetext[0].black.nags == ["$19", "$139", "$0"]
 
-    @pytest.mark.wip
     def test_parse_movetexts_nags(self):
         moves = '1. e4 $0 e5 $1 $139 {comment 1...} 2. d4 $3 {comment 2.} d5 $19 $21 $139 $0'
         movetext = pgn.parse(moves, actions=Actions()).movetext
@@ -207,6 +227,7 @@ class TestParseMovetext(object):
         assert movetext[1].black.san == "d5"
         assert movetext[1].black.nags == ["$19", "$21", "$139", "$0"]
 
+@pytest.mark.wip
 class TestGame:
     """Test the parsing of an entire game
 
@@ -224,3 +245,28 @@ class TestGame:
         moves = "[Site \"help\"]\n1. e4 e5 1-0"
         parsed = pgn.parse(moves, actions=Actions())
         assert parsed.score.result == "1-0"
+
+    def test_parse_score_single_ply_white(self):
+        moves = "[Site \"help\"]\n1. e4 1-0"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "1-0"
+
+    def test_parse_score_single_ply_black(self):
+        moves = "[Site \"help\"]\n1...e5 0-1"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "0-1"
+
+    def test_parse_score_single_ply_unknown_white(self):
+        moves = "[Site \"tst\"]\n1. e4 *"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "*"
+
+    def test_parse_score_no_tp_single_ply_unknown_white(self):
+        moves = "11. Kxc4 *"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "*"
+
+    def test_parse_score_single_ply_unknown_black(self):
+        moves = "[Site \"tst\"]\n1...e4 *"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "*"

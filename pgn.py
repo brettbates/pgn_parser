@@ -35,7 +35,7 @@ class TreeNode3(TreeNode):
         self.move_number = elements[0]
         self.dlm = elements[11]
         self.white = elements[2]
-        self.san = elements[7]
+        self.san = elements[2]
         self.wnags = elements[4]
         self.wcomment = elements[5]
         self.black = elements[7]
@@ -459,7 +459,11 @@ class Grammar(object):
                                 if address7 is not FAILURE:
                                     elements0.append(address7)
                                     address8 = FAILURE
+                                    index4 = self._offset
                                     address8 = self._read_san()
+                                    if address8 is FAILURE:
+                                        address8 = TreeNode(self._input[index4:index4], index4)
+                                        self._offset = index4
                                     if address8 is not FAILURE:
                                         elements0.append(address8)
                                         address9 = FAILURE
@@ -467,19 +471,19 @@ class Grammar(object):
                                         if address9 is not FAILURE:
                                             elements0.append(address9)
                                             address10 = FAILURE
-                                            index4 = self._offset
+                                            index5 = self._offset
                                             address10 = self._read_nags()
                                             if address10 is FAILURE:
-                                                address10 = TreeNode(self._input[index4:index4], index4)
-                                                self._offset = index4
+                                                address10 = TreeNode(self._input[index5:index5], index5)
+                                                self._offset = index5
                                             if address10 is not FAILURE:
                                                 elements0.append(address10)
                                                 address11 = FAILURE
-                                                index5 = self._offset
+                                                index6 = self._offset
                                                 address11 = self._read_comment()
                                                 if address11 is FAILURE:
-                                                    address11 = TreeNode(self._input[index5:index5], index5)
-                                                    self._offset = index5
+                                                    address11 = TreeNode(self._input[index6:index6], index6)
+                                                    self._offset = index6
                                                 if address11 is not FAILURE:
                                                     elements0.append(address11)
                                                     address12 = FAILURE
@@ -640,6 +644,9 @@ class Grammar(object):
                     address1 = self._read_castle()
                     if address1 is FAILURE:
                         self._offset = index2
+                        address1 = self._read_blacks_move()
+                        if address1 is FAILURE:
+                            self._offset = index2
         if address1 is not FAILURE:
             elements0.append(address1)
             address5 = FAILURE
@@ -1169,6 +1176,28 @@ class Grammar(object):
             address0 = self._actions.make_comment(self._input, index1, self._offset, elements0)
             self._offset = self._offset
         self._cache['comment'][index0] = (address0, self._offset)
+        return address0
+
+    def _read_blacks_move(self):
+        address0, index0 = FAILURE, self._offset
+        cached = self._cache['blacks_move'].get(index0)
+        if cached:
+            self._offset = cached[1]
+            return cached[0]
+        chunk0 = None
+        if self._offset < self._input_size:
+            chunk0 = self._input[self._offset:self._offset + 2]
+        if chunk0 == '..':
+            address0 = TreeNode(self._input[self._offset:self._offset + 2], self._offset)
+            self._offset = self._offset + 2
+        else:
+            address0 = FAILURE
+            if self._offset > self._failure:
+                self._failure = self._offset
+                self._expected = []
+            if self._offset == self._failure:
+                self._expected.append('".."')
+        self._cache['blacks_move'][index0] = (address0, self._offset)
         return address0
 
     def _read_nags(self):

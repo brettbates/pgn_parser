@@ -66,7 +66,7 @@ Feature: Parsing a pgn file
             | 1. e4                | e4      | NONE    |
             | 1...e5               | NONE    | e5      |
             | 1... e5              | NONE    | e5      |
-            | 1... e5 2. d4        | NONE,d4 | e5      |
+            | 1... e5 2. d4        | NONE,d4 | e5,NONE |
 
 
     Scenario Outline: Parse a comment

@@ -142,6 +142,7 @@ class Move:
     def __init__(self, move_number, white, wnags, wcomment, black, bnags, bcomment):
         """Inits the Move x with the white and or black Ply's"""
         self.move_number = self.move_no_to_i(move_number)
+        white = "" if white == ".." else white
         self.white = Ply("w", white, wnags, wcomment)
         self.black = Ply("b", black, bnags, bcomment)
 

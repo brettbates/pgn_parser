@@ -50,14 +50,8 @@ def step_a_movetext_only_pgn(context, movetext):
 @then(u'we can access the moves node containing an array of correct Move objects with SAN\'s {sanw} {sanb}')
 def step_we_can_access_moves(context, sanw, sanb):
     for i, san in enumerate(sanw.split(',')):
-        assert_that(context.pgn.movetext[i].white.san, equal_to(san))
-        assert_that(context.pgn.movetext[i].black.san, equal_to(sanb.split(',')[i]))
-
-@then(u'we can access the moves node containing an array of correct Move objects with 1-3 SAN\'s e4 NONE NONE')
-def step_impl(context):
-    for i, san in enumerate(sanw.split(',')):
         sw = san if san != "NONE" else ""
-        sb = san if sanb.split(',')[i] != "NONE" else ""
+        sb = sanb.split(',')[i] if sanb.split(',')[i] != "NONE" else ""
         assert_that(context.pgn.movetext[i].white.san, equal_to(sw))
         assert_that(context.pgn.movetext[i].black.san, equal_to(sb))
 
@@ -69,7 +63,6 @@ def step_a_pgn_file(context, f):
 
 @then(u'we should have a full Game that can be stringified to equal the file {g}')
 def step_test_full_game_file(context, g):
-
     correct = open('./features/steps/'+g).read()
     diff = difflib.ndiff(correct.splitlines(1), str(context.pgn).splitlines(1))
     for l in diff:
