@@ -57,17 +57,23 @@ class Actions:
                            e.white.text,
                            e.wnags.elements,
                            wcomment,
-                           [e.wvar],
+                           e.wvars,
                            e.black.text,
                            e.bnags.elements,
                            bcomment,
-                           [e.bvar]))
+                           e.bvars))
         return mt
 
     def make_variation(self, input, start, end, elements):
         """Return just the movetext of a variation"""
         return elements[2]
 
+    def make_variations(self, input, start, end, elements):
+        """Convert a TreeNode of variations to a List of them"""
+        out = []
+        for e in elements:
+            out.append(e)
+        return out
 
     def make_game(self, input, start, end, elements):
         """Construct the representation of an entire game

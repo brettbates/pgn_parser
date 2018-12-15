@@ -39,11 +39,11 @@ class TreeNode3(TreeNode):
         self.san = elements[2]
         self.wnags = elements[4]
         self.wcomment = elements[5]
-        self.wvar = elements[6]
+        self.wvars = elements[6]
         self.black = elements[8]
         self.bnags = elements[10]
         self.bcomment = elements[11]
-        self.bvar = elements[12]
+        self.bvars = elements[12]
 
 
 class TreeNode4(TreeNode):
@@ -106,7 +106,7 @@ class TreeNode11(TreeNode):
 class TreeNode12(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode12, self).__init__(text, offset, elements)
-        self.dlm = elements[1]
+        self.dlm = elements[4]
         self.movetext = elements[2]
 
 
@@ -483,7 +483,7 @@ class Grammar(object):
                                 elements0.append(address6)
                                 address7 = FAILURE
                                 index4 = self._offset
-                                address7 = self._read_variation()
+                                address7 = self._read_variations()
                                 if address7 is FAILURE:
                                     address7 = TreeNode(self._input[index4:index4], index4)
                                     self._offset = index4
@@ -523,7 +523,7 @@ class Grammar(object):
                                                         elements0.append(address12)
                                                         address13 = FAILURE
                                                         index8 = self._offset
-                                                        address13 = self._read_variation()
+                                                        address13 = self._read_variations()
                                                         if address13 is FAILURE:
                                                             address13 = TreeNode(self._input[index8:index8], index8)
                                                             self._offset = index8
@@ -1346,6 +1346,26 @@ class Grammar(object):
         self._cache['nag'][index0] = (address0, self._offset)
         return address0
 
+    def _read_variations(self):
+        address0, index0 = FAILURE, self._offset
+        cached = self._cache['variations'].get(index0)
+        if cached:
+            self._offset = cached[1]
+            return cached[0]
+        remaining0, index1, elements0, address1 = 1, self._offset, [], True
+        while address1 is not FAILURE:
+            address1 = self._read_variation()
+            if address1 is not FAILURE:
+                elements0.append(address1)
+                remaining0 -= 1
+        if remaining0 <= 0:
+            address0 = self._actions.make_variations(self._input, index1, self._offset, elements0)
+            self._offset = self._offset
+        else:
+            address0 = FAILURE
+        self._cache['variations'][index0] = (address0, self._offset)
+        return address0
+
     def _read_variation(self):
         address0, index0 = FAILURE, self._offset
         cached = self._cache['variation'].get(index0)
@@ -1393,6 +1413,13 @@ class Grammar(object):
                             self._expected.append('")"')
                     if address4 is not FAILURE:
                         elements0.append(address4)
+                        address5 = FAILURE
+                        address5 = self._read_dlm()
+                        if address5 is not FAILURE:
+                            elements0.append(address5)
+                        else:
+                            elements0 = None
+                            self._offset = index1
                     else:
                         elements0 = None
                         self._offset = index1
