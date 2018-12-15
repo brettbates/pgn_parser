@@ -141,6 +141,11 @@ class Ply:
         out = self.san
         if self.comment != "":
             out += " {" + self.comment + "}"
+        if len(self.nags) > 0:
+            for n in self.nags:
+                out += " " + n
+        for v in self.variations:
+            out += "\n    (" + str(v).rstrip(' ') + ")"
         return out
 
     def nodes_to_nags(self, nags):
@@ -168,7 +173,12 @@ class Move:
             1. e4 e5
         """
         out = "{}.".format(self.move_number)
-        out += " {} {}".format(str(self.white), str(self.black))
+        if self.white.san != "":
+            out += " " + str(self.white)
+        else:
+            out += ".."
+        if self.black.san != "":
+            out += " " + str(self.black)
         return out
 
     def __repr__(self):
@@ -235,13 +245,18 @@ class Game:
     def __init__(self, tag_pairs, gcomment, movetext, score):
         """Initialises the Game given the constituent tag_pairs, movetext and score"""
         self.tag_pairs = tag_pairs
-        self.comment = gcomment
+        if type(gcomment) == str:
+            self.comment = gcomment
+        else:
+            self.comment = ''
         self.movetext = movetext
         self.score = score
 
     def __str__(self):
         """Stringifies the Game to a valid pgn file"""
         out = str(self.tag_pairs)
+        if self.comment:
+            out += "{" + self.comment + "}\n"
         out += str(self.movetext)
         out += str(self.score)
         return out

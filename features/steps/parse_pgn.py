@@ -65,9 +65,22 @@ def step_a_pgn_file(context, f):
 def step_test_full_game_file(context, g):
     correct = open('./features/steps/test_data/'+g).read()
     diff = difflib.ndiff(correct.splitlines(1), str(context.pgn).splitlines(1))
-    for l in diff:
-        print(l)
-    assert_that(len(list(diff)), equal_to(0))
+    ds = list(diff)
+    print("*" * 80)
+    print("Parsed:")
+    print("*" * 80)
+    print(context.pgn)
+    print('')
+    print("*" * 80)
+    print("Expected:")
+    print("*" * 80)
+    print(correct)
+    print('')
+    print("*" * 80)
+    print("Diffs:")
+    print("*" * 80)
+    [print(d, end='') for d in ds]
+    assert_that(str(context.pgn), equal_to(correct))
 
 @then(u'we can access the comment and moves {sanw} {commw} {sanb} {commb}')
 def step_we_can_access_comments(context, sanw, commw, sanb, commb):
@@ -90,10 +103,6 @@ def step_we_can_access_comments(context, sanw, commw, sanb, commb):
         assert_that(context.pgn.movetext[i].white.comment, equal_to(commw))
         assert_that(context.pgn.movetext[i].black.san, equal_to(sanb.split(',')[i]))
         assert_that(context.pgn.movetext[i].black.comment, equal_to(commb))
-
-# @then(u'we can access the variations {vs}')
-# def step_we_can_access_variations(context, vs):
-#     assert_that(str(context.pgn.movetext[0].black.variations[0]), equal_to(vs))
 
 @then(u'we can access the variations 1. d4')
 def step_var_1d4(context):
