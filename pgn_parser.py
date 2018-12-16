@@ -145,7 +145,7 @@ class Ply:
             for n in self.nags:
                 out += " " + n
         for v in self.variations:
-            out += "\n    (" + str(v).rstrip(' ') + ")"
+            out += " (" + str(v).strip(' ') + ")"
         return out
 
     def nodes_to_nags(self, nags):
@@ -201,9 +201,7 @@ class Movetext(list):
         """
         out = ""
         for i, m in enumerate(self):
-            out += str(m)
-            if i + 1 != len(self):
-               out += "\n"
+            out += " " + str(m) if i > 0 else str(m)
         out += " "
         return out
 
@@ -256,7 +254,7 @@ class Game:
         """Stringifies the Game to a valid pgn file"""
         out = str(self.tag_pairs)
         if self.comment:
-            out += "{" + self.comment + "}\n"
+            out += "{" + self.comment + "} "
         out += str(self.movetext)
         out += str(self.score)
         return out

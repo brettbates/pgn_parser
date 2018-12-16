@@ -99,12 +99,12 @@ Feature: Parsing a pgn file
     Scenario Outline: Parse a full pgn file
         Given the pgn file <f>
          When we parse it
-         Then we should have a full Game that can be stringified to equal the file <g>
+         Then we should have a full Game that can be stringified to equal its input <f>
 
         Examples: PGNs
-            | f          | g           |
-            | cc1.pgn    | cc1.epgn    |
-            | cc4.pgn    | cc4.epgn    |
-            | cbnag.pgn  | cbnag.epgn  |
-            | cbsply.pgn | cbsply.epgn |
-            | cbvar.pgn  | cbvar.epgn  |
+            | f          |
+            | cc1.pgn    |
+            | cc4.pgn    |
+            | cbnag.pgn  |
+            | cbsply.pgn |
+            | cbvar.pgn  |

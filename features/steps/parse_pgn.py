@@ -61,7 +61,7 @@ def step_a_pgn_file(context, f):
     context.pgn_str = open(path).read()
 
 
-@then(u'we should have a full Game that can be stringified to equal the file {g}')
+@then(u'we should have a full Game that can be stringified to equal its input {g}')
 def step_test_full_game_file(context, g):
     correct = open('./features/steps/test_data/'+g).read()
     diff = difflib.ndiff(correct.splitlines(1), str(context.pgn).splitlines(1))
