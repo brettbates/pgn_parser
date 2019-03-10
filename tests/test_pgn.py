@@ -325,3 +325,23 @@ class TestGame:
         moves = "[Site \"tst\"]\n1. Kxh2\nQxf4+ 0-1"
         parsed = pgn.parse(moves, actions=Actions())
         assert parsed.score.result == "0-1"
+
+    def test_parse_arbitrary_space(self):
+        moves = "[Site \"tst\"]\n1. Kxh2\nQxf4+ 0-1 "
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "0-1"
+
+    def test_parse_arbitrary_space_n(self):
+        moves = "[Site \"tst\"]\n1. Kxh2\nQxf4+ 0-1\n"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "0-1"
+
+    def test_parse_arbitrary_space_sn(self):
+        moves = "[Site \"tst\"]\n1. Kxh2\nQxf4+ 0-1 \n"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "0-1"
+
+    def test_parse_arbitrary_space_any(self):
+        moves = "[Site \"tst\"]\n1. Kxh2\nQxf4+ 0-1\n \n\t    \n"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "0-1"
