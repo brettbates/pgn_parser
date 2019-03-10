@@ -152,6 +152,23 @@ class TestGame:
         with pytest.raises(PGNGameException):
             g.move(39)
 
+
+class TestTagPairs:
+    """Testing TagPair objects"""
+
+    def test_str_ordered(self):
+        """Given a set of tag pairs, ensure an ordered STR"""
+        input =  '[Date "now"]\n[Site "bmb.io"]\n[Event "here"]\n{game comment} 1. e4 e5 {white wins} 1-0'
+        expect = '[Event "here"]\n[Site "bmb.io"]\n[Date "now"]\n\n{game comment} 1. e4 e5 {white wins} 1-0'
+        assert str(pgn.parse(input, actions=Actions())) == expect
+
+    def test_str_extra(self):
+        """Given a set of tag pairs, ensure an ordered STR"""
+        input =  '[Extra "tp"]\n[Date "now"]\n[Site "bmb.io"]\n[Event "here"]\n{game comment} 1. e4 e5 {white wins} 1-0'
+        expect = '[Event "here"]\n[Site "bmb.io"]\n[Date "now"]\n[Extra "tp"]\n\n{game comment} 1. e4 e5 {white wins} 1-0'
+        actual = str(pgn.parse(input, actions=Actions()))
+        assert actual == expect
+
 class TestMove:
     """Testing Move objects"""
 

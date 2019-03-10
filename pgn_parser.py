@@ -112,9 +112,19 @@ class TagPairs(OrderedDict):
            [Key "Value"]\n
            And an extra newline at the end to begin the movetext section
         """
+
+        # Seven tag roster list
+        strl = ["Event","Site","Date","Round","White","Black","Result"]
         out = ""
+
+        # We first print in order of STR, then any others
+        for k in strl:
+            if k in self.keys():
+                out += '[{} "{}"]\n'.format(k, self[k])
+
         for k in self.keys():
-            out += '[{} "{}"]\n'.format(k, self[k])
+            if k not in strl:
+                out += '[{} "{}"]\n'.format(k, self[k])
 
         out += "\n"
         return out
