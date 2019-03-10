@@ -98,6 +98,10 @@ class Actions:
         return g
 
 
+class PGNGameException(Exception):
+    pass
+
+
 class TagPairs(OrderedDict):
     """TagPairs is a slightly customised OrderedDict
 
@@ -216,6 +220,31 @@ class Movetext(list):
         return out
 
 
+    def move(self, find):
+        """Returns the move number `find`
+        Args:
+            find: An integer move number
+
+        Returns:
+            A Move() object of the requested move number
+
+        Raises:
+            PGNGameException is raised if the number cannot be found
+        """
+        first = self[0].move_number
+        last = self[-1].move_number
+        fail = "Move number {} is not in this game. First is {}, last is {}.".format(find, first, last)
+        if first > find:
+            raise PGNGameException(fail)
+
+        for m in self:
+            if find == m.move_number:
+                return m
+
+        # We haven't found the move
+            raise PGNGameException(fail)
+
+
 
 class Score:
     """Representing the score of a game"""
@@ -239,10 +268,6 @@ class Score:
             return "*"
         else:
             return "{}-{}".format(self.white, self.black)
-
-
-class PGNGameException(Exception):
-    pass
 
 
 class Game:
@@ -296,23 +321,6 @@ class Game:
 
     def move(self, find):
         """Returns the move number `find`
-        Args:
-            find: An integer move number
-
-        Returns:
-            A Move() object of the requested move number
-
-        Raises:
-            PGNGameException is raised if the number cannot be found
+        An alias for self.movetext.move()
         """
-        first = self.movetext[0].move_number
-        last = self.movetext[-1].move_number
-        if first > find:
-            raise PGNGameException("Move number {} is not in this game. First is {}, last is {}.".format(find, first, last))
-
-        for m in self.movetext:
-            if find == m.move_number:
-                return m
-
-        # We haven't found the move
-        raise PGNGameException("Move number {} is not in this game. First is {}, last is {}.".format(find, first, last))
+        return self.movetext.move(find)

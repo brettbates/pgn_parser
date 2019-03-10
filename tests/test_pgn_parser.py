@@ -345,3 +345,12 @@ class TestGame:
         moves = "[Site \"tst\"]\n1. Kxh2\nQxf4+ 0-1\n \n\t    \n"
         parsed = parser.parse(moves, actions=Actions())
         assert parsed.score.result == "0-1"
+
+    def test_parse_full_move(self):
+        moves = "[Site \"tst\"]\n1. e4 $1 {a comment} (1.d5) 0-1"
+        game = parser.parse(moves, actions=Actions())
+        m1 = game.move(1)
+        assert m1.white.san == "e4"
+        assert m1.white.comment == "a comment"
+        assert m1.white.nags[0] == "$1"
+        assert m1.white.variations[0].move(1).white.san == "d5"
