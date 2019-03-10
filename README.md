@@ -4,7 +4,8 @@ A Python library for parsing pgn files into a python friendly format.
 
 The parser is built using (canopy)[http://canopy.jcoglan.com/], the rest is Python.
 
-## Installing
+## Setup
+### Installing
 
 Make sure you have python 3 installed.
 
@@ -15,7 +16,19 @@ pip install pgn_parser
 Then import like so:
 
 ```
-from pgn_parser import pgn
+from pgn_parser import pgn, parser
+```
+
+### Testing
+
+For running unit tests (py.test):
+```
+pytest
+```
+
+For running behavioural tests:
+```
+behave
 ```
 
 ## Using
