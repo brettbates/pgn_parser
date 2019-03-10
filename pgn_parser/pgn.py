@@ -1,4 +1,4 @@
-import pgn
+import pgn_parser.parser as parser
 import re
 from collections import OrderedDict, deque
 

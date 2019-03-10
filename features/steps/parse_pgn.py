@@ -1,7 +1,7 @@
-import pgn
+import pgn_parser.parser as parser
 import difflib
 import os
-from pgn_parser import Actions
+from pgn_parser.pgn import Actions
 from behave import given, when, then
 from hamcrest import assert_that, has_item, equal_to
 
@@ -13,7 +13,7 @@ def step_a_pgn_file_with_tag_pair(context, tag_pairs):
 
 @when(u'we parse it')
 def step_we_parse_it(context):
-    context.pgn = pgn.parse(context.pgn_str, actions=Actions())
+    context.pgn = parser.parse(context.pgn_str, actions=Actions())
 
 
 @then(u'we can access a TagPair of k {tag_key}, v {tag_value}')
