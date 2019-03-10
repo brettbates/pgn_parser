@@ -2,3 +2,6 @@ __pycache__/*
 tests/__pycache__/*
 *.pyc
 wip.sh
+build/*
+dist/*
+pgn_parser_bmbio.egg-info/*
