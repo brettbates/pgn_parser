@@ -231,6 +231,10 @@ class Score:
             return "{}-{}".format(self.white, self.black)
 
 
+class PGNGameException(Exception):
+    pass
+
+
 class Game:
     """Represents an entire game
 
@@ -239,6 +243,7 @@ class Game:
         movetext: The List of all Move's
         score: The score of the game
     """
+
 
     def __init__(self, tag_pairs, gcomment, movetext, score):
         """Initialises the Game given the constituent tag_pairs, movetext and score"""
@@ -252,9 +257,6 @@ class Game:
 
     def __str__(self):
         """Stringifies the Game to a valid pgn file"""
-        return self.format_game()
-
-    def format_game(self):
         out = str(self.tag_pairs)
         if self.comment:
             out += "{" + self.comment + "} "
@@ -262,6 +264,7 @@ class Game:
         return out
 
     def format_body(self):
+        """Keeps the line length to 80 chars on output"""
         mt = deque(str(self.movetext).split(' ') + [])
         out = mt.popleft()
         ll = len(out)
@@ -281,3 +284,25 @@ class Game:
                 ll = len(n)
         return out + str(self.score)
 
+    def move(self, find):
+        """Returns the move number `find`
+        Args:
+            find: An integer move number
+
+        Returns:
+            A Move() object of the requested move number
+
+        Raises:
+            PGNGameException is raised if the number cannot be found
+        """
+        first = self.movetext[0].move_number
+        last = self.movetext[-1].move_number
+        if first > find:
+            raise PGNGameException("Move number {} is not in this game. First is {}, last is {}.".format(find, first, last))
+
+        for m in self.movetext:
+            if find == m.move_number:
+                return m
+
+        # We haven't found the move
+        raise PGNGameException("Move number {} is not in this game. First is {}, last is {}.".format(find, first, last))

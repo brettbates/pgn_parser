@@ -1,5 +1,5 @@
 import pgn
-from pgn_parser import Actions, Move, Score, Ply
+from pgn_parser import Actions, Move, Score, Ply, PGNGameException
 import pytest
 from unittest.mock import MagicMock
 
@@ -107,7 +107,7 @@ class TestParserActions:
         assert g.movetext[0].white.variations[0][0].white.san == "d4"
 
     def test_make_game_gcomment(self):
-        input = '[Site "bmb.io]\n{game comment} 1. e4 e5 {white wins} 1-0'
+        input = '[Site "bmb.io"]\n{game comment} 1. e4 e5 {white wins} 1-0'
         g = Actions().make_game(input, 0, 0,
                                      [{'Site': 'bmb.io'},
                                       pgn.TreeNode('\n', 0),
@@ -121,6 +121,36 @@ class TestParserActions:
         assert g.movetext[0].black.san == "e5"
         assert g.movetext[0].black.comment == "white wins"
         assert g.score.result == "1-0"
+
+
+class TestGame:
+    """Testing Game Objects"""
+    def test_get_move(self):
+        """Given a move number retrieve that move"""
+        input = '[Site "bmb.io"]\n{game comment} 35. e4 e5 36. d4 d5 37. c4 c5 {white wins} 1-0'
+        g = pgn.parse(input, actions=Actions())
+        assert str(g.move(35)) == "35. e4 e5"
+
+    def test_get_move_0(self):
+        """Given a move number retrieve that move"""
+        input = '[Site "bmb.io"]\n{game comment} 35. e4 e5 36. d4 d5 37. c4 c5 {white wins} 1-0'
+        g = pgn.parse(input, actions=Actions())
+        with pytest.raises(PGNGameException):
+            g.move(0)
+
+    def test_get_move_too_low(self):
+        """Given a move number retrieve that move"""
+        input = '[Site "bmb.io"]\n{game comment} 35. e4 e5 36. d4 d5 37. c4 c5 {white wins} 1-0'
+        g = pgn.parse(input, actions=Actions())
+        with pytest.raises(PGNGameException):
+            g.move(34)
+
+    def test_get_move_too_high(self):
+        """Given a move number retrieve that move"""
+        input = '[Site "bmb.io"]\n{game comment} 35. e4 e5 36. d4 d5 37. c4 c5 {white wins} 1-0'
+        g = pgn.parse(input, actions=Actions())
+        with pytest.raises(PGNGameException):
+            g.move(39)
 
 class TestMove:
     """Testing Move objects"""
@@ -139,6 +169,7 @@ class TestPly:
     def test_nodes_to_nags(self):
         p = Ply("1.", "e4", nags=make_nodes(["$1", "$19", "$139"]))
         assert p.nags == ["$1", "$19", "$139"]
+
 
 class TestScore:
     """Testing the construction of a Score object"""
