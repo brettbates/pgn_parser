@@ -320,3 +320,8 @@ class TestGame:
         moves = "[Site \"tst\"]\n1...e4 *"
         parsed = pgn.parse(moves, actions=Actions())
         assert parsed.score.result == "*"
+
+    def test_parse_newline_sore(self):
+        moves = "[Site \"tst\"]\n1. Kxh2\nQxf4+ 0-1"
+        parsed = pgn.parse(moves, actions=Actions())
+        assert parsed.score.result == "0-1"

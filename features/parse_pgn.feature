@@ -108,3 +108,4 @@ Feature: Parsing a pgn file
             | cbnag.pgn  |
             | cbsply.pgn |
             | cbvar.pgn  |
+            | cblarge.pgn |

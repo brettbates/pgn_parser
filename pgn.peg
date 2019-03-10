@@ -2,7 +2,7 @@ grammar PGN
 
 # PGN Spec: http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm
 # Representation of a full game in pgn format, tag_pairs, movetext and score
-game <- tag_pairs:tag_pairs [\n]? gcomment:comment? movetext:movetext score:score? %make_game
+game <- tag_pairs:tag_pairs [\n]? gcomment:comment? movetext:movetext score:score? [\s]* %make_game
 
 # A tag pair is a key, value store in the form [Key "Value"]
 tag_pairs <- tag_pair* %make_tag_pairs

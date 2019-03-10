@@ -1,6 +1,6 @@
 import pgn
 import re
-from collections import OrderedDict
+from collections import OrderedDict, deque
 
 class Actions:
     """Collection of actions for the parser
@@ -140,7 +140,7 @@ class Ply:
         """
         out = self.san
         if self.comment != "":
-            out += " {" + self.comment + "}"
+            out += " {" + self.comment.replace('\n', ' ') + "}"
         if len(self.nags) > 0:
             for n in self.nags:
                 out += " " + n
@@ -252,9 +252,32 @@ class Game:
 
     def __str__(self):
         """Stringifies the Game to a valid pgn file"""
+        return self.format_game()
+
+    def format_game(self):
         out = str(self.tag_pairs)
         if self.comment:
             out += "{" + self.comment + "} "
-        out += str(self.movetext)
-        out += str(self.score)
+        out += self.format_body()
         return out
+
+    def format_body(self):
+        mt = deque(str(self.movetext).split(' ') + [])
+        out = mt.popleft()
+        ll = len(out)
+        while True:
+            if len(mt) is 0:
+                break
+
+            n = mt.popleft()
+            # If the current line length + space + character is less than
+            # 80 chars long
+            if ll + len(n) + 1 < 80:
+                to_add = " " + n
+                out += " " + n
+                ll += len(to_add)
+            else:
+                out += "\n" + n
+                ll = len(n)
+        return out + str(self.score)
+
