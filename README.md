@@ -24,7 +24,12 @@ from pgn_parser import pgn, parser
 
 ### Testing
 
-For running unit tests (py.test):
+The tests are written using pytest and behave, these must be installed first:
+```
+pip install pytest behave
+```
+
+For running unit tests:
 ```
 pytest
 ```

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pgn-parser",
-    version="1.0.0",
+    version="1.0.1",
     author="Brett Bates",
     author_email="b@bmb.io",
     description="PGN Parser is for parsing .pgn chess files",
@@ -19,8 +19,4 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Topic :: Games/Entertainment :: Board Games",
     ],
-    install_requires=[
-        "pytest",
-        "behave",
-    ]
 )
