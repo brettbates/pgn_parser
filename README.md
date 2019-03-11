@@ -110,7 +110,7 @@ The header of a pgn file
 
 Is represented like so in python
 ```Python
-game.tag_pairs["Site'] == "github.com"
+game.tag_pairs["Site"] == "github.com"
 ```
 
 
@@ -125,7 +125,7 @@ moves = "1. e4 $1 {a comment} (1.d5)"
 
 Is represented like so:
 ```Python
-m1 = game.move(1)_
+m1 = game.move(1)
 
 assert m1.white.san == "e4"
 assert m1.white.comment == "a comment"
