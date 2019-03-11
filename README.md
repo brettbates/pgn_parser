@@ -4,7 +4,7 @@ A Python library for parsing pgn files into a python friendly format.
 
 The parser is built using [canopy](http://canopy.jcoglan.com/), the rest is Python.
 
-The PGN spec is based on (and thanks to) the spec at [saremba.de](http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm)
+The PGN spec is based on (and thanks to) the spec at [saremba.de](http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm).
 
 ## Setup
 ### Installing
