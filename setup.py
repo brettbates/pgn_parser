@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pgn-parser-bmbio",
+    name="pgn-parser",
     version="1.0.0",
     author="Brett Bates",
     author_email="b@bmb.io",
@@ -17,5 +17,6 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
+        "Topic :: Games/Entertainment :: Board Games",
     ],
 )
