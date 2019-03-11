@@ -2,9 +2,9 @@
 
 A Python library for parsing pgn files into a python friendly format.
 
-The parser is built using (canopy)[http://canopy.jcoglan.com/], the rest is Python.
+The parser is built using [canopy](http://canopy.jcoglan.com/), the rest is Python.
 
-The PGN spec is based on (and thanks to) the at (saremba.de)[http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm]
+The PGN spec is based on (and thanks to) the spec at [saremba.de](http://www.saremba.de/chessgml/standards/pgn/pgn-complete.htm).
 
 ## Setup
 ### Installing
@@ -112,7 +112,7 @@ game.tag_pairs["Site'] == "github.com"
 ### Moves
 Each move has a move number and two ply's, white and black. 
 Each ply can be anything from empty to having comments, variations and 
-(nags)[https://en.wikipedia.org/wiki/Numeric_Annotation_Glyphs].
+[nags](https://en.wikipedia.org/wiki/Numeric_Annotation_Glyphs).
 
 ```PGN
 moves = "1. e4 $1 {a comment} (1.d5)"
@@ -139,7 +139,7 @@ not sure what to support.
 
 ## Authors
 
-* **Brett Bates** - *Initial work* - (github)[https://github.com/brettbates]
+* **Brett Bates** - *Initial work* - [github](https://github.com/brettbates)
 
 ## License
 
