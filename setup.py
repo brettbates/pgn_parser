@@ -19,4 +19,8 @@ setuptools.setup(
         "Operating System :: OS Independent",
         "Topic :: Games/Entertainment :: Board Games",
     ],
+    install_requires=[
+        "pytest",
+        "behave",
+    ]
 )
