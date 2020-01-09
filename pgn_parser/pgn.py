@@ -242,7 +242,7 @@ class Movetext(list):
                 return m
 
         # We haven't found the move
-            raise PGNGameException(fail)
+        raise PGNGameException(fail)
 
 
 
