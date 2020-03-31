@@ -4,7 +4,6 @@ import pytest
 import subprocess
 
 
-@pytest.mark.tp
 class TestParseTagPairs(object):
     """Test the parsing of tag pairs
 
@@ -54,7 +53,6 @@ class TestParseTagPairs(object):
         assert tag_pairs['Event'] == "Let\'s Play!"
 
 
-@pytest.mark.mt
 class TestParseMovetext(object):
     """Test the parsing of movetext
 
@@ -246,14 +244,12 @@ class TestGame:
         assert parsed.movetext[0].white.variations[0][0].white.san == "d4"
         assert parsed.movetext[0].white.variations[0][0].black.san == "d5"
 
-    @pytest.mark.wip
     def test_parse_game_variations_2o(self):
         moves = "[Site \"help\"]\n1. e4 (1. d4 d5) (1. c4 e5) e5 1-0"
         parsed = parser.parse(moves, actions=Actions())
         assert parsed.movetext[0].white.variations[1][0].white.san == "c4"
         assert parsed.movetext[0].white.variations[1][0].black.san == "e5"
 
-    @pytest.mark.wip
     def test_parse_game_variations_2o_multi(self):
         moves = "[Site \"help\"]\n1. e4 (1. d4 d5 2. c4 e6) (1. c4 c5 2. g3 e6) e5 1-0"
         parsed = parser.parse(moves, actions=Actions())
@@ -262,7 +258,6 @@ class TestGame:
         assert parsed.movetext[0].white.variations[1][1].white.san == "g3"
         assert parsed.movetext[0].white.variations[1][1].black.san == "e6"
 
-    @pytest.mark.wip
     def test_parse_game_variations_3o(self):
         moves = "[Site \"help\"]\n1. e4 (1. d4 d5) (1. c4 e5) (1. a4 h5) e5 1-0"
         parsed = parser.parse(moves, actions=Actions())

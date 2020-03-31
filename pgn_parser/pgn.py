@@ -90,7 +90,7 @@ class Actions:
         """
         e = elements
 
-        if re.match("(1-0|0-1|1/2-1/2|\*)", e[4].text):
+        if re.match(r"(1-0|0-1|1/2-1/2|\*)", e[4].text):
             s = Score(e[4].text)
         else:
             s = Score('*')
@@ -200,7 +200,7 @@ class Move:
 
     def move_no_to_i(self, move_number):
         """Turns move number from string to intiger"""
-        no = int(re.match("([0-9]+)\.", move_number).groups()[0])
+        no = int(re.match(r"([0-9]+)\.", move_number).groups()[0])
         return no
 
 

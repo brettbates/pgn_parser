@@ -5,3 +5,4 @@ wip.sh
 build/*
 dist/*
 pgn_parser.egg-info/*
+Pipfile*
