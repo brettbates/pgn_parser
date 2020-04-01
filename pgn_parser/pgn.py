@@ -50,14 +50,21 @@ class Actions:
                 wcomment = e.wcomment
             else:
                 wcomment = ""
+
+            mcomment = ""
             if type(e.bcomment) == str:
-                bcomment = e.bcomment
+                if e.black.text:
+                    bcomment = e.bcomment
+                else:
+                    bcomment = ""
+                    mcomment = e.bcomment
             else:
                 bcomment = ""
-            if type(e.mcomment) == str:
-                mcomment = e.mcomment
-            else:
-                mcomment = ""
+
+            if not mcomment:
+                if type(e.mcomment) == str:
+                    mcomment = e.mcomment
+
             mt.append(Move(e.move_number.text,
                            e.white.text,
                            e.wnags.elements,
@@ -136,7 +143,9 @@ class TagPairs(OrderedDict):
             if k not in strl:
                 out += '[{} "{}"]\n'.format(k, self[k])
 
-        out += "\n"
+        # If there are no tag pairs, the extra newline is not needed
+        if out:
+            out += "\n"
         return out
 
 

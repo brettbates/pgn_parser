@@ -102,7 +102,6 @@ Feature: Parsing a pgn file
          When we parse it
          Then we should have a full Game that can be stringified to equal its input <f>
 
-        @wip
         Examples: PGNs
             | f           |
             | lcuser1.pgn |

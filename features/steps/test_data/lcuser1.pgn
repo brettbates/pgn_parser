@@ -1,4 +1,4 @@
-1. d4 { [%clk 0:03:00] } Nc6 { [%clk 0:03:00] } { A40 Mikenas Defense } 2. Nf3 
+1. d4 { [%clk 0:03:00] } Nc6 { [%clk 0:03:00] } { A40 Mikenas Defense } 2. Nf3
 { [%clk 0:02:56] } e5 { [%clk 0:02:58] } 3. d5 { [%clk 0:02:54] } Nd4 { [%clk 0
 :02:55] } 4. e3 { [%clk 0:02:52] } Nxf3+ { [%clk 0:02:53] } 5. Qxf3 { [%clk 0: 
 02:50] } Nf6 { [%clk 0:02:51] } 6. Nc3 { [%clk 0:02:47] } Bb4 { [%clk 0:02:46] 
@@ -11,4 +11,4 @@ lk 0:02:24] } 12. Qxc3 { [%clk 0:02:31] } bxc6 { [%clk 0:02:22] } 13. Bxc6+ { [
  0:02:11] } Qg6 { [%clk 0:02:09] } 17. Rad1 { [%clk 0:02:06] } Ke7 { [%clk 0:02
 :03] } 18. Qb4 { [%clk 0:02:01] } Bh3 { [%clk 0:01:59] } 19. g3 { [%clk 0:01:59
 ] } Qxc2 { [%clk 0:01:53] } 20. Qxd6+ { [%clk 0:01:54] } Ke8 { [%clk 0:01:51] }
- 21. Qd8# { [%clk 0:01:52] } { White wins by checkmate. } 1-0
+21. Qd8# { [%clk 0:01:52] } { White wins by checkmate. } 1-0
