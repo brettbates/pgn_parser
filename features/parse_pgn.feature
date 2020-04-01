@@ -85,15 +85,17 @@ Feature: Parsing a pgn file
     Scenario Outline: Parse a comment
         Given a pgn file with only movetext <movetext>
          When we parse it
-         Then we can access the comment and moves <SANW> <COMMW> <SANB> <COMMB>
+         Then we can access the comment and moves <SANW> <COMMW> <SANB> <COMMB> <COMMM>
 
         Examples: Movetext comment
-            | movetext                     | SANW   | COMMW | SANB | COMMB |
-            | 1. e4 {white} e5 {black}     | e4     | white | e5   | black |
-            | 1. e4 e5 {black}             | e4     | NONE  | e5   | black |
-            | 1. e4 {white} e5             | e4     | white | e5   | NONE  |
-            | 1. e4 { } e5                 | e4     | SPACE | e5   | NONE  |
-            | 1. e4 {\n} e5                | e4     | \n    | e5   | NONE  |
+            | movetext                                                | SANW   | COMMW          | SANB | COMMB          | COMMM        |
+            | 1. e4 {white} e5 {black}                                | e4     | white          | e5   | black          | NONE         |
+            | 1. e4 {white} e5 {black} {move comment}                 | e4     | white          | e5   | black          | move comment |
+            | 1. e4 e5 {black}                                        | e4     | NONE           | e5   | black          | NONE         |
+            | 1. e4 {white} e5                                        | e4     | white          | e5   | NONE           | NONE         |
+            | 1. e4 { } e5                                            | e4     | SPACE          | e5   | NONE           | NONE         |
+            | 1. e4 {\n} e5                                           | e4     | \n             | e5   | NONE           | NONE         |
+            | 1. d4 { [%clk 0:03:00] } Nc6 { [%clk 0:03:00] } { A40 } | d4     | [%clk 0:03:00] | Nc6  | [%clk 0:03:00] | A40          |
 
 
     Scenario Outline: Parse a full pgn file

@@ -82,8 +82,8 @@ def step_test_full_game_file(context, g):
     [print(d, end='') for d in ds]
     assert_that(str(context.pgn), equal_to(correct))
 
-@then(u'we can access the comment and moves {sanw} {commw} {sanb} {commb}')
-def step_we_can_access_comments(context, sanw, commw, sanb, commb):
+@then(u'we can access the comment and moves {sanw} {commw} {sanb} {commb} {commm}')
+def step_we_can_access_comments(context, sanw, commw, sanb, commb, commm):
     if commw == "NONE":
         commw = ""
     elif commw == "SPACE":
@@ -103,6 +103,7 @@ def step_we_can_access_comments(context, sanw, commw, sanb, commb):
         assert_that(context.pgn.movetext[i].white.comment, equal_to(commw))
         assert_that(context.pgn.movetext[i].black.san, equal_to(sanb.split(',')[i]))
         assert_that(context.pgn.movetext[i].black.comment, equal_to(commb))
+        assert_that(context.pgn.movetext[i].comment, equal_to(commm))
 
 @then(u'we can access the variations 1. d4')
 def step_var_1d4(context):
