@@ -349,3 +349,20 @@ class TestGame:
         assert m1.white.comment == "a comment"
         assert m1.white.nags[0] == "$1"
         assert m1.white.variations[0].move(1).white.san == "d5"
+
+    def test_parse_move_comment_after_black(self):
+        moves = "[Site \"tst\"]\n1. e4 e5 {a comment} {move one} 0-1"
+        game = parser.parse(moves, actions=Actions())
+        m1 = game.move(1)
+        assert m1.white.san == "e4"
+        assert m1.black.san == "e5"
+        assert m1.black.comment == "a comment"
+        assert m1.comment == "move one"
+
+    def test_parse_move_comment_after_white(self):
+        moves = "[Site \"tst\"]\n1. e4 $1 {a comment} {move one} 0-1"
+        game = parser.parse(moves, actions=Actions())
+        m1 = game.move(1)
+        assert m1.white.san == "e4"
+        assert m1.white.comment == "a comment"
+        assert m1.comment == "move one"
