@@ -4,14 +4,15 @@ import pytest
 from unittest.mock import MagicMock
 
 
-def make_move_node(text, move_number, white, wcomment, black, bcomment):
+def make_move_node(text, move_number, white, wcomment, black, bcomment, mcomment):
     """Create a mock set of nodes that comprise a Game"""
     n = MagicMock(
         move_number = parser.TreeNode(move_number, 0),
         white = parser.TreeNode(white, 0),
         wcomment = wcomment,
         black = parser.TreeNode(black, 0),
-        bcomment = bcomment)
+        bcomment = bcomment,
+        mcomment = mcomment)
     return n
 
 def make_nags_move_node(text, move_number, white, wnags, wcomment, black, bnags, bcomment):
@@ -52,20 +53,21 @@ class TestParserActions:
     def test_make_movetext_simple(self):
         mtt = '1. e4 e5'
         mt = Actions().make_movetext(mtt, 0, 0,
-                                     [make_move_node(mtt, "1.", "e4", "", "e5", "")])
+                                     [make_move_node(mtt, "1.", "e4", "", "e5", "", "")])
         assert mt[0].move_number == 1
         assert mt[0].white.san == "e4"
         assert mt[0].black.san == "e5"
 
     def test_make_movetext_comment(self):
-        mtt = '1. e4 {white comment} e5 {black comment}'
+        mtt = '1. e4 {white comment} e5 {black comment} {move comment}'
         mt = Actions().make_movetext(mtt, 0, 0,
-                                     [make_move_node(mtt, "1.", "e4", "white comment", "e5", "black comment")])
+                                     [make_move_node(mtt, "1.", "e4", "white comment", "e5", "black comment", "move comment")])
         assert mt[0].move_number == 1
         assert mt[0].white.san == "e4"
         assert mt[0].white.comment == "white comment"
         assert mt[0].black.san == "e5"
         assert mt[0].black.comment == "black comment"
+        assert mt[0].comment == "move comment"
 
     def test_make_movetext_nags(self):
         mtt = '1. e4 $1 e5 $19 $139'
@@ -83,7 +85,7 @@ class TestParserActions:
                                      [{'Site': 'bmb.io'},
                                       parser.TreeNode('\n', 0),
                                       "",
-                                      [Move("1.", "e4", "", "", [], "e5", "", "white wins", [])],
+                                      [Move("1.", "e4", "", "", [], "e5", "", "white wins", [], "")],
                                       parser.TreeNode('1-0', 0)])
         assert g.tag_pairs['Site'] == "bmb.io"
         assert g.movetext[0].move_number == 1
@@ -99,8 +101,8 @@ class TestParserActions:
                                       parser.TreeNode('\n', 0),
                                       "",
                                       [Move("1.", "e4", "", "",
-                                            [[Move("1.", "d4", "", "", "", "", "", "", "")]],
-                                            "e5", "", "white wins", [])],
+                                            [[Move("1.", "d4", "", "", "", "", "", "", "", "")]],
+                                            "e5", "", "white wins", [], "")],
                                       parser.TreeNode('1-0', 0)])
         assert g.tag_pairs['Site'] == "bmb.io"
         assert g.movetext[0].white.variations[0][0].move_number == 1
@@ -112,7 +114,7 @@ class TestParserActions:
                                      [{'Site': 'bmb.io'},
                                       parser.TreeNode('\n', 0),
                                       "game comment",
-                                      [Move("1.", "e4", "", "", [], "e5", "", "white wins", [])],
+                                      [Move("1.", "e4", "", "", [], "e5", "", "white wins", [], "")],
                                       parser.TreeNode('1-0', 0)])
         assert g.tag_pairs['Site'] == "bmb.io"
         assert g.comment == "game comment"
@@ -174,7 +176,7 @@ class TestMove:
 
     def test_move_no_to_i(self):
         """Test converting a string move number like 1. into the int 1"""
-        f = Move("1.","","","","","","","","").move_no_to_i
+        f = Move("1.","","","","","","","","", "").move_no_to_i
         assert f("1.") == 1
         assert f("2.") == 2
         assert f("300.") == 300

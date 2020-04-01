@@ -38,10 +38,11 @@ class Actions:
             e.wcomment = The comment after whites move
             e.black = The SAN of black's move
             e.bcomment = The comment after blacks move
+            e.mcomment = The comment that applies to the whole move
 
         Returns:
             A List of Move objects in order:
-                [Move("1.", "e4", "white comment", "e5", "black comment"), etc]
+                [Move("1.", "e4", "white comment", "e5", "black comment", "move comment"), etc]
         """
         mt = Movetext()
         for e in elements:
@@ -53,6 +54,10 @@ class Actions:
                 bcomment = e.bcomment
             else:
                 bcomment = ""
+            if type(e.mcomment) == str:
+                mcomment = e.mcomment
+            else:
+                mcomment = ""
             mt.append(Move(e.move_number.text,
                            e.white.text,
                            e.wnags.elements,
@@ -61,7 +66,8 @@ class Actions:
                            e.black.text,
                            e.bnags.elements,
                            bcomment,
-                           e.bvars))
+                           e.bvars,
+                           mcomment))
         return mt
 
     def make_variation(self, input, start, end, elements):
@@ -173,12 +179,13 @@ class Ply:
 class Move:
     """Representing a move, of 1 or 2 ply along with the move number"""
 
-    def __init__(self, move_number, white, wnags, wcomment, wvars, black, bnags, bcomment, bvars):
+    def __init__(self, move_number, white, wnags, wcomment, wvars, black, bnags, bcomment, bvars, mcomment):
         """Inits the Move x with the white and or black Ply's"""
         self.move_number = self.move_no_to_i(move_number)
         white = "" if white == ".." else white
         self.white = Ply("w", white, wnags, wcomment, wvars)
         self.black = Ply("b", black, bnags, bcomment, bvars)
+        self.comment = mcomment
 
     def __str__(self):
         """Stringifies the Move to legal pgn move

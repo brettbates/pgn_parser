@@ -5,3 +5,6 @@ build:
 
 push:
 	twine upload dist/*
+
+canopy:
+	canopy --lang python pgn_parser/parser.peg

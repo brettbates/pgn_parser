@@ -90,6 +90,8 @@ def step_we_can_access_comments(context, sanw, commw, sanb, commb, commm):
         commw = " "
     elif commw == "\\n":
         commw = "\n"
+    elif commw == "CLK":
+        commw = " [%clk 0:03:00] "
 
     if commb == "NONE":
         commb = ""
@@ -97,13 +99,23 @@ def step_we_can_access_comments(context, sanw, commw, sanb, commb, commm):
         commb = " "
     elif commb == "\\n":
         commb = "\n"
+    elif commb == "CLK":
+        commb = " [%clk 0:03:00] "
+
+    if commm == "NONE":
+        commm = ""
+    elif commm == "SPACE":
+        commm = " "
+    elif commm == "\\n":
+        commm = "\n"
+
 
     for i, san in enumerate(sanw.split(',')):
         assert_that(context.pgn.movetext[i].white.san, equal_to(san))
         assert_that(context.pgn.movetext[i].white.comment, equal_to(commw))
         assert_that(context.pgn.movetext[i].black.san, equal_to(sanb.split(',')[i]))
         assert_that(context.pgn.movetext[i].black.comment, equal_to(commb))
-        assert_that(context.pgn.movetext[i].comment, equal_to(commm))
+        assert_that(context.pgn.movetext[i].comment.strip(), equal_to(commm))
 
 @then(u'we can access the variations 1. d4')
 def step_var_1d4(context):

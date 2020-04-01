@@ -88,14 +88,14 @@ Feature: Parsing a pgn file
          Then we can access the comment and moves <SANW> <COMMW> <SANB> <COMMB> <COMMM>
 
         Examples: Movetext comment
-            | movetext                                                | SANW   | COMMW          | SANB | COMMB          | COMMM        |
-            | 1. e4 {white} e5 {black}                                | e4     | white          | e5   | black          | NONE         |
-            | 1. e4 {white} e5 {black} {move comment}                 | e4     | white          | e5   | black          | move comment |
-            | 1. e4 e5 {black}                                        | e4     | NONE           | e5   | black          | NONE         |
-            | 1. e4 {white} e5                                        | e4     | white          | e5   | NONE           | NONE         |
-            | 1. e4 { } e5                                            | e4     | SPACE          | e5   | NONE           | NONE         |
-            | 1. e4 {\n} e5                                           | e4     | \n             | e5   | NONE           | NONE         |
-            | 1. d4 { [%clk 0:03:00] } Nc6 { [%clk 0:03:00] } { A40 } | d4     | [%clk 0:03:00] | Nc6  | [%clk 0:03:00] | A40          |
+            | movetext                                                | SANW   | COMMW  | SANB | COMMB | COMMM        |
+            | 1. e4 {white} e5 {black}                                | e4     | white  | e5   | black | NONE         |
+            | 1. e4 {white} e5 {black} {move comment}                 | e4     | white  | e5   | black | move comment |
+            | 1. e4 e5 {black}                                        | e4     | NONE   | e5   | black | NONE         |
+            | 1. e4 {white} e5                                        | e4     | white  | e5   | NONE  | NONE         |
+            | 1. e4 { } e5                                            | e4     | SPACE  | e5   | NONE  | NONE         |
+            | 1. e4 {\n} e5                                           | e4     | \n     | e5   | NONE  | NONE         |
+            | 1. d4 { [%clk 0:03:00] } Nc6 { [%clk 0:03:00] } { A40 } | d4     | CLK    | Nc6  | CLK   | A40          |
 
 
     Scenario Outline: Parse a full pgn file
@@ -104,10 +104,11 @@ Feature: Parsing a pgn file
          Then we should have a full Game that can be stringified to equal its input <f>
 
         Examples: PGNs
-            | f          |
-            | cc1.pgn    |
-            | cc4.pgn    |
-            | cbnag.pgn  |
-            | cbsply.pgn |
-            | cbvar.pgn  |
+            | f           |
+            | cc1.pgn     |
+            | cc4.pgn     |
+            | cbnag.pgn   |
+            | cbsply.pgn  |
+            | cbvar.pgn   |
             | cblarge.pgn |
+            | lcuser1.pgn |

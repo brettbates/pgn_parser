@@ -1,3 +1,6 @@
+# This file was generated from pgn_parser/parser.peg
+# See http://canopy.jcoglan.com/ for documentation.
+
 from collections import defaultdict
 import re
 
@@ -34,7 +37,7 @@ class TreeNode3(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode3, self).__init__(text, offset, elements)
         self.move_number = elements[0]
-        self.dlm = elements[13]
+        self.dlm = elements[15]
         self.white = elements[2]
         self.san = elements[2]
         self.wnags = elements[4]
@@ -44,6 +47,7 @@ class TreeNode3(TreeNode):
         self.bnags = elements[10]
         self.bcomment = elements[11]
         self.bvars = elements[12]
+        self.mcomment = elements[14]
 
 
 class TreeNode4(TreeNode):
@@ -563,6 +567,24 @@ class Grammar(object):
                                                             address14 = self._read_dlm()
                                                             if address14 is not FAILURE:
                                                                 elements0.append(address14)
+                                                                address15 = FAILURE
+                                                                index9 = self._offset
+                                                                address15 = self._read_comment()
+                                                                if address15 is FAILURE:
+                                                                    address15 = TreeNode(self._input[index9:index9], index9)
+                                                                    self._offset = index9
+                                                                if address15 is not FAILURE:
+                                                                    elements0.append(address15)
+                                                                    address16 = FAILURE
+                                                                    address16 = self._read_dlm()
+                                                                    if address16 is not FAILURE:
+                                                                        elements0.append(address16)
+                                                                    else:
+                                                                        elements0 = None
+                                                                        self._offset = index1
+                                                                else:
+                                                                    elements0 = None
+                                                                    self._offset = index1
                                                             else:
                                                                 elements0 = None
                                                                 self._offset = index1
