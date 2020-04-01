@@ -68,7 +68,6 @@ Feature: Parsing a pgn file
             | 1... e5 2. d4        | NONE,d4 | e5,NONE |
 
 
-    @wip
     Scenario Outline: Parse movetext with variations
         Given a pgn file with only movetext <movetext>
          When we parse it
@@ -103,12 +102,13 @@ Feature: Parsing a pgn file
          When we parse it
          Then we should have a full Game that can be stringified to equal its input <f>
 
+        @wip
         Examples: PGNs
             | f           |
+            | lcuser1.pgn |
             | cc1.pgn     |
             | cc4.pgn     |
             | cbnag.pgn   |
             | cbsply.pgn  |
             | cbvar.pgn   |
             | cblarge.pgn |
-            | lcuser1.pgn |

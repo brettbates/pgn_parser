@@ -37,17 +37,17 @@ class TreeNode3(TreeNode):
     def __init__(self, text, offset, elements):
         super(TreeNode3, self).__init__(text, offset, elements)
         self.move_number = elements[0]
-        self.dlm = elements[19]
+        self.dlm = elements[15]
         self.white = elements[2]
         self.san = elements[2]
         self.wnags = elements[4]
         self.wcomment = elements[6]
-        self.wvars = elements[8]
-        self.black = elements[10]
-        self.bnags = elements[12]
-        self.bcomment = elements[14]
-        self.bvars = elements[16]
-        self.mcomment = elements[18]
+        self.wvars = elements[7]
+        self.black = elements[9]
+        self.bnags = elements[11]
+        self.bcomment = elements[13]
+        self.bvars = elements[14]
+        self.mcomment = elements[16]
 
 
 class TreeNode4(TreeNode):
@@ -520,51 +520,55 @@ class Grammar(object):
                                 if address7 is not FAILURE:
                                     elements0.append(address7)
                                     address8 = FAILURE
-                                    address8 = self._read_dlm()
+                                    index4 = self._offset
+                                    address8 = self._read_variations()
+                                    if address8 is FAILURE:
+                                        address8 = TreeNode(self._input[index4:index4], index4)
+                                        self._offset = index4
                                     if address8 is not FAILURE:
                                         elements0.append(address8)
                                         address9 = FAILURE
-                                        index4 = self._offset
-                                        address9 = self._read_variations()
-                                        if address9 is FAILURE:
-                                            address9 = TreeNode(self._input[index4:index4], index4)
-                                            self._offset = index4
+                                        address9 = self._read_dlm()
                                         if address9 is not FAILURE:
                                             elements0.append(address9)
                                             address10 = FAILURE
-                                            address10 = self._read_dlm()
+                                            index5 = self._offset
+                                            address10 = self._read_san()
+                                            if address10 is FAILURE:
+                                                address10 = TreeNode(self._input[index5:index5], index5)
+                                                self._offset = index5
                                             if address10 is not FAILURE:
                                                 elements0.append(address10)
                                                 address11 = FAILURE
-                                                index5 = self._offset
-                                                address11 = self._read_san()
-                                                if address11 is FAILURE:
-                                                    address11 = TreeNode(self._input[index5:index5], index5)
-                                                    self._offset = index5
+                                                address11 = self._read_dlm()
                                                 if address11 is not FAILURE:
                                                     elements0.append(address11)
                                                     address12 = FAILURE
-                                                    address12 = self._read_dlm()
+                                                    index6 = self._offset
+                                                    address12 = self._read_nags()
+                                                    if address12 is FAILURE:
+                                                        address12 = TreeNode(self._input[index6:index6], index6)
+                                                        self._offset = index6
                                                     if address12 is not FAILURE:
                                                         elements0.append(address12)
                                                         address13 = FAILURE
-                                                        index6 = self._offset
-                                                        address13 = self._read_nags()
-                                                        if address13 is FAILURE:
-                                                            address13 = TreeNode(self._input[index6:index6], index6)
-                                                            self._offset = index6
+                                                        address13 = self._read_dlm()
                                                         if address13 is not FAILURE:
                                                             elements0.append(address13)
                                                             address14 = FAILURE
-                                                            address14 = self._read_dlm()
+                                                            index7 = self._offset
+                                                            address14 = self._read_comment()
+                                                            if address14 is FAILURE:
+                                                                address14 = TreeNode(self._input[index7:index7], index7)
+                                                                self._offset = index7
                                                             if address14 is not FAILURE:
                                                                 elements0.append(address14)
                                                                 address15 = FAILURE
-                                                                index7 = self._offset
-                                                                address15 = self._read_comment()
+                                                                index8 = self._offset
+                                                                address15 = self._read_variations()
                                                                 if address15 is FAILURE:
-                                                                    address15 = TreeNode(self._input[index7:index7], index7)
-                                                                    self._offset = index7
+                                                                    address15 = TreeNode(self._input[index8:index8], index8)
+                                                                    self._offset = index8
                                                                 if address15 is not FAILURE:
                                                                     elements0.append(address15)
                                                                     address16 = FAILURE
@@ -572,38 +576,13 @@ class Grammar(object):
                                                                     if address16 is not FAILURE:
                                                                         elements0.append(address16)
                                                                         address17 = FAILURE
-                                                                        index8 = self._offset
-                                                                        address17 = self._read_variations()
+                                                                        index9 = self._offset
+                                                                        address17 = self._read_comment()
                                                                         if address17 is FAILURE:
-                                                                            address17 = TreeNode(self._input[index8:index8], index8)
-                                                                            self._offset = index8
+                                                                            address17 = TreeNode(self._input[index9:index9], index9)
+                                                                            self._offset = index9
                                                                         if address17 is not FAILURE:
                                                                             elements0.append(address17)
-                                                                            address18 = FAILURE
-                                                                            address18 = self._read_dlm()
-                                                                            if address18 is not FAILURE:
-                                                                                elements0.append(address18)
-                                                                                address19 = FAILURE
-                                                                                index9 = self._offset
-                                                                                address19 = self._read_comment()
-                                                                                if address19 is FAILURE:
-                                                                                    address19 = TreeNode(self._input[index9:index9], index9)
-                                                                                    self._offset = index9
-                                                                                if address19 is not FAILURE:
-                                                                                    elements0.append(address19)
-                                                                                    address20 = FAILURE
-                                                                                    address20 = self._read_dlm()
-                                                                                    if address20 is not FAILURE:
-                                                                                        elements0.append(address20)
-                                                                                    else:
-                                                                                        elements0 = None
-                                                                                        self._offset = index1
-                                                                                else:
-                                                                                    elements0 = None
-                                                                                    self._offset = index1
-                                                                            else:
-                                                                                elements0 = None
-                                                                                self._offset = index1
                                                                         else:
                                                                             elements0 = None
                                                                             self._offset = index1

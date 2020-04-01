@@ -200,13 +200,15 @@ class Move:
             out += ".."
         if self.black.san != "":
             out += " " + str(self.black)
+        if self.comment:
+            out += " {" + self.comment + "}"
         return out
 
     def __repr__(self):
         return self.__str__()
 
     def move_no_to_i(self, move_number):
-        """Turns move number from string to intiger"""
+        """Turns move number from string to integer"""
         no = int(re.match(r"([0-9]+)\.", move_number).groups()[0])
         return no
 

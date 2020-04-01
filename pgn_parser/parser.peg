@@ -13,7 +13,7 @@ value <- [^\"]*
 
 # Movetext is one or more moves, terminated by a score, like 1. "e4 e5 0-1"
 movetext <- move* %make_movetext
-move <- move_number dlm white:san dlm wnags:nags? dlm wcomment:comment? dlm wvars:variations? dlm black:san? dlm bnags:nags? dlm bcomment:comment? dlm bvars:variations? dlm mcomment:comment? dlm
+move <- move_number dlm white:san dlm wnags:nags? dlm wcomment:comment? wvars:variations? dlm black:san? dlm bnags:nags? dlm bcomment:comment? bvars:variations? dlm mcomment:comment?
 move_number <- [0-9]+ "."
 
 # A SAN is a standard algebraic notation representation of a single players move, like e4
